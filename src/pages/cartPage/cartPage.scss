@@ -1,0 +1,34 @@
+@import '../../style/mixins.scss';
+
+.cart {
+    margin-bottom: 274px;
+
+    &__title {
+        font-size: 3.2rem;
+        margin-bottom: 55px;
+    }
+
+    &__list {
+        &__separator {
+            margin: 24px 0;
+        }
+    }
+
+    &__count {
+        display: grid;
+        grid-template-columns: min-content min-content;
+        column-gap: 5px;
+        margin-bottom: 20px;
+        font-size: 2.4rem;
+        line-height: 3.6rem;
+        font-weight: 500;
+
+        &__number {
+            font-weight: 700;
+        }
+    }
+
+    &__order-btn {
+        @include btn-green(43px, 279px, 1.4rem);
+    }
+}

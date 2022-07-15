@@ -1,0 +1,35 @@
+.slider {
+    position: relative;
+
+    &__window {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+
+        .slider__slides-container {
+            height: 100%;
+            display: flex;
+            transition: transform 0.3s;
+        }
+    }
+
+    &-arrow {
+        position: absolute;
+        bottom: 5.56%;
+        width: 24px;
+        height: 24px;
+        background-color: rgba(0, 0, 0, 0.73);
+        cursor: pointer;
+    }
+
+    .slider__arrow-left {
+        right: 24%;
+        transform: rotate(90deg);
+    }
+
+    .slider__arrow-right {
+        right: 8%;
+        transform: rotate(-90deg);
+    }
+
+}
