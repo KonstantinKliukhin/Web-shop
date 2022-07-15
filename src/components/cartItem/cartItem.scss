@@ -1,0 +1,30 @@
+@import '../../style/mixins.scss';
+
+
+.cart__item {
+    display: grid;
+    grid-template-columns: 1fr auto 200px;
+    column-gap: 39px;
+
+    &__counter {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+
+        &__btn {
+            @include btn-white-black(45, 45);
+        }
+
+        &__count {
+            font-weight: 500;
+            font-size: 2.4rem;
+        }
+    }
+
+    &__img {
+        max-height: 288px;
+    }
+}
+
+

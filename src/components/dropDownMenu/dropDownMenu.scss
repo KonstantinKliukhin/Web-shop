@@ -1,0 +1,16 @@
+.dropdown__overlay {
+    position: fixed;
+    left: 0;
+    z-index: 99;
+    width: 100vw;
+    height: 100vh;
+    background-color:rgba(57, 55, 72, 0.22);
+}
+
+.dropdown-menu {
+    position: absolute;
+    z-index: 100;
+    width: max-content;
+    max-height: fit-content;
+    background-color: #fff;
+}

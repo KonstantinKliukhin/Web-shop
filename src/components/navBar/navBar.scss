@@ -1,0 +1,56 @@
+@import '../../style/variables.scss';
+
+.nav {
+    position: relative;
+    height: 80px;
+    padding: 0 15px;
+    margin-bottom: 80px;
+    
+    &__categories {
+        max-width: 47%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        column-gap: 32px;
+        font-size: 1.6rem;
+        text-transform: uppercase;
+        row-gap: 1.9rem;
+
+        &__item {
+            position: relative;
+            height: 100%;
+            line-height: 8rem;
+            cursor: pointer;
+            &:hover {
+                color: $primary--color;
+
+                &::after {
+                    position: absolute;
+                    content: '';
+                    width: 110%;
+                    border: 1px solid $primary--color;
+                    top: 100%;
+                    left: -5%;
+                }
+            }
+
+            :out-of-range {
+                display: none;
+            }
+
+        }
+    }
+
+    &__brand {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 41px;
+        height: 41px;
+    }
+
+}
+
+
+

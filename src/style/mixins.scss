@@ -1,0 +1,72 @@
+@import './variables.scss';
+
+@mixin btn-white-black($min-height: 45, $min-width: 63, $font-size: 1.6) {
+    min-height: #{'#{$min-height}px'};
+    min-width: #{'#{$min-width}px'};
+    padding: 3px;
+    border: 1px solid $secondary--color;
+    font-size:  #{'#{$font-size}rem'};
+    line-height: #{'#{calc(($min-height - 8))}px'};
+    text-align: center;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+    background-color: #fff;
+    color: $secondary--color;
+    text-transform: uppercase;
+
+    &:hover, &.active {
+        background-color: $secondary--color;
+        color: #fff;
+    }
+
+    @content;
+}
+
+@mixin btn-color($size: 32px) {
+    width: $size;
+    height: $size;
+    background-color: red;
+    &:hover, &.active {
+        box-shadow:  0 0 0 1px #fff,  0 0 0 2px $primary--color;
+    }
+
+    @content;
+}
+
+@mixin btn-green($min-height, $min-width, $font-size) {
+    min-width: $min-width;
+    min-height: $min-height;
+    font-size: $font-size;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    background-color: $primary--color;
+    text-transform: uppercase;
+    color: #fff;
+
+    &:hover{
+        background-color: #fff;
+        color: $primary--color;
+        box-shadow: 0px 4px 3px rgba(168, 172, 176, 0.19);
+    }
+
+    @content;
+}
+
+@mixin customScroll {
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #e4e4e4;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        position: absolute;
+        border-left: 0;
+        border-right: 0;
+        background-color: $secondary--color;
+    }
+}

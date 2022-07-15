@@ -1,0 +1,111 @@
+@import '../../style/variables.scss';
+@import '../../style//mixins.scss';
+
+
+
+.minicart-content {
+    padding: 32px 16px;
+    font-size: 1.6rem;
+    line-height: 2.6rem;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+
+    @include customScroll;
+
+    &__text {
+        margin-bottom: 32px;
+        font-weight: 500;
+    }
+
+    .minicart-content__list {
+        display: flex;
+        flex-direction: column;
+        row-gap: 40px;
+        margin-bottom: 32px;
+    
+        .cart__item {
+            grid-template-columns: 136px 24px 121px;
+            column-gap: 8px;
+
+            .item__description {
+            
+                &__btn {
+                    @include btn-white-black(24, 24, 1.4);
+                }
+            
+                &__title, &__brand {
+                    font-size: 1.6rem;
+                    line-height: 2.56rem;
+                    font-weight: 300;
+                    margin: 0;
+                }
+            
+                &__price {
+                    margin: 4px 0 0 0;
+                    font-weight: 500;
+                    font-size: 1.6rem;
+                    line-height: 2.6rem;
+                }
+            
+                &__block {
+                    margin-top: 8px;
+            
+                    &__title {
+                        font-size: 1.4rem;
+                        line-height: 1.6rem;
+                        font-weight: 400;
+                        text-transform: unset;
+                    }
+                }
+            
+                &__color {
+                    @include btn-color(16px);
+                }
+            }
+            
+        
+            &__counter {
+                &__btn {
+                    @include btn-white-black(24, 24, 1.4);
+                }
+
+                &__count {
+                    font-size: 1.6rem;
+                }
+            }
+        
+            &__img {
+                max-height: 190px;
+            }
+        }
+    }
+
+    &__total-price {
+        margin-bottom: 34px;
+
+        &__text {
+            font-size: 1.6rem;
+            line-height: 1.8rem;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        &__count {
+            font-weight: 700;
+        }
+    }
+
+
+    &__btns-wrapper {
+        .btn--right {
+            @include btn-green(43px, 140px, 1.4rem);
+        }
+
+        .btn--left {
+            @include btn-white-black(43, 140, 1.4) {
+                font-family: 'Raleway', sans-serif;
+                font-weight: 600;
+            };
+        }
+    }
+}

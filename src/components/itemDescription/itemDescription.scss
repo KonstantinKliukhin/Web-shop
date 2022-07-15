@@ -1,0 +1,58 @@
+@import '../../style/mixins.scss';
+
+
+.item__description {
+    display: flex;
+    flex-direction: column;
+
+    &__btn {
+        @include btn-white-black;
+    }
+
+
+    &__brand {
+        margin-bottom: 16px;
+        font-size: 3rem;
+        line-height: 2.7rem;
+        font-weight: 600;
+    }
+
+    &__title {
+        font-weight: 400;
+        font-size: 3rem;
+        line-height: 2.7rem;
+        margin-bottom: 20px;
+    }
+
+    &__price {
+        margin-bottom: 4px;
+        font-weight: 700;
+        font-size: 2.4rem;
+    }
+
+    &__block {
+        margin-top: 16px;
+
+        &__title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-family: 'Roboto Condensed', sans-serif;
+            text-transform: uppercase;
+        }
+
+        &__list {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 8px;
+            row-gap: 8px;
+            line-height: 0;
+        }
+    }
+
+    &__color {
+        @include btn-color;
+    }
+}
+
+
