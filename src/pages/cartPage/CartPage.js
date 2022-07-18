@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-import CartItem from '../../components/cartItem/CartItem'
+import CartList from "../../components/cartList/CartList";
 
 import './cartPage.scss';
 
@@ -12,17 +12,7 @@ class CartPage extends Component {
         return (
             <section className="container cart">
                     <h1 className="cart__title">CART</h1>
-                    <ul className="cart__list">
-                        <hr className="cart__list__separator" />
-                        <CartItem/>
-                        <hr className="cart__list__separator" />
-                        <CartItem/>
-                        <hr className="cart__list__separator" />
-                        <CartItem/>
-                        <hr className="cart__list__separator" />
-                        <CartItem/>
-                        <hr className="cart__list__separator" />
-                    </ul>
+                    <CartList name='main-cart'/>
                     <div className="cart__count">
                         <p className="cart__count__tax">Tax 21%: </p>
                         <p className="cart__count__number">$42.00</p>

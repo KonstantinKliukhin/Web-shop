@@ -1,7 +1,8 @@
 import { Component, Children, cloneElement } from "react";
-import arrow from '../../resources/img/arrowDownWhite.svg';
+
 import PropTypes from 'prop-types';
 
+import arrow from '../../resources/img/arrowDownWhite.svg';
 
 import './slider.scss';
 
@@ -53,33 +54,76 @@ class Slider extends Component {
 
 
     render() {
-        const {height, width} = this.props;
+        const {height, width, styles, id} = this.props;
 
         const {offset, pages} = this.state;
 
+        const { 
+            slider, 
+            window, 
+            container, 
+            arrowLeftWrapper, 
+            arrowRightWrapper, 
+            arrowLeft, 
+            arrowRight 
+        } = styles;
+
         return (
             <div 
-                style={{height: `${height}px`, width: `${width}px`}} 
-                className="slider">
-                <div className="slider__window">
-                    <div style={{transform: `translate(${offset}px)`}} className="slider__slides-container">
+                style={{height: `${height}px`, width: `${width}px`, ...slider}} 
+                className={`slider ${id}`}>
+                <div style={window} className={`slider__window ${id}`}>
+                    <div 
+                        style={{transform: `translate(${offset}px)`, ...container}} 
+                        className={`slider__slides-container ${id}`}>
                         {pages}
                     </div>
                 </div>
-                <div onClick={this.handleLeftArrowClick} className="slider-arrow slider__arrow-left">
-                    <img src={arrow} alt="" className="slider-arrow__img" />
+                <div 
+                    onClick={this.handleLeftArrowClick} 
+                    className={`slider-arrow slider__arrow-left ${id}`}
+                    style={arrowLeftWrapper}>
+                    <img 
+                        src={arrow} 
+                        alt="arrow to previous slide" 
+                        className={`slider-arrow__img ${id}`}
+                        style={arrowLeft} />
                 </div>
-                <div onClick={this.handleRightArrowClick} className="slider-arrow slider__arrow-right">
-                    <img src={arrow} alt="" className="slider-arrow__img" />
+                <div 
+                    onClick={this.handleRightArrowClick} 
+                    className={`slider-arrow slider__arrow-right ${id}`}
+                    style={arrowRightWrapper}>
+                    <img 
+                        src={arrow} 
+                        alt="arrow to next slide" 
+                        className={`slider-arrow__img ${id}`}
+                        style={arrowRight}/>
                 </div>
             </div>
         )
     }
 }
 
+Slider.defaultProps = {
+    id: '',
+    height: 200,
+    width: 200,
+    styles: {},
+}
+
 Slider.propTypes = {
-    height: PropTypes.number,
-    width: PropTypes.number,
+    id: PropTypes.string,
+    height: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    styles: PropTypes.shape({
+        slider: PropTypes.objectOf(PropTypes.string),
+        window:PropTypes.objectOf(PropTypes.string),
+        container: PropTypes.objectOf(PropTypes.string),
+        arrowLeftWrapper: PropTypes.objectOf(PropTypes.string),
+        arrowRightWrapper: PropTypes.objectOf(PropTypes.string),
+        arrowLeft: PropTypes.objectOf(PropTypes.string),
+        arrowRight: PropTypes.objectOf(PropTypes.string),
+      }),
 }
 
 export default Slider;

@@ -1,16 +1,26 @@
-.dropdown__overlay {
-    position: fixed;
-    left: 0;
-    z-index: 99;
-    width: 100vw;
-    height: 100vh;
-    background-color:rgba(57, 55, 72, 0.22);
-}
+@import '../../style/variables.scss';
 
 .dropdown-menu {
-    position: absolute;
-    z-index: 100;
+    position: relative;
     width: max-content;
     max-height: fit-content;
     background-color: #fff;
+
+    &__overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 99;
+      background-color: rgba(57, 55, 72, 0.22);
+    }
+
+    &__list {
+      position: absolute;
+      top: 100%;
+      z-index: 100;
+    }
 }
+
+

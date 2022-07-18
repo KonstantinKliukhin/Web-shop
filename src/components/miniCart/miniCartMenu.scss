@@ -17,7 +17,7 @@
         font-weight: 500;
     }
 
-    .minicart-content__list {
+    .cart__list.mini-cart {
         display: flex;
         flex-direction: column;
         row-gap: 40px;
@@ -26,13 +26,10 @@
         .cart__item {
             grid-template-columns: 136px 24px 121px;
             column-gap: 8px;
+            padding: 0;
+            border: 0;
 
             .item__description {
-            
-                &__btn {
-                    @include btn-white-black(24, 24, 1.4);
-                }
-            
                 &__title, &__brand {
                     font-size: 1.6rem;
                     line-height: 2.56rem;
@@ -47,7 +44,7 @@
                     line-height: 2.6rem;
                 }
             
-                &__block {
+                .attribute-block {
                     margin-top: 8px;
             
                     &__title {
@@ -56,10 +53,13 @@
                         font-weight: 400;
                         text-transform: unset;
                     }
-                }
-            
-                &__color {
-                    @include btn-color(16px);
+                    &__item {
+                        @include btn-white-black(24, 24, 1.4);
+
+                        &-color {
+                            @include btn-color(16px);
+                        }
+                    }
                 }
             }
             

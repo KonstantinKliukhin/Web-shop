@@ -1,0 +1,29 @@
+@import '../../style/mixins';
+
+.attribute-block {
+    margin-top: 16px;
+
+    &__title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        font-family: 'Roboto Condensed', sans-serif;
+        text-transform: uppercase;
+    }
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 8px;
+        row-gap: 8px;
+        line-height: 0;
+
+        .attribute-block__item {
+            @include btn-white-black;
+
+            &-color {
+                @include btn-color;
+            }
+        }
+    }
+}

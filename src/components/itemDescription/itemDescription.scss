@@ -30,7 +30,7 @@
         font-size: 2.4rem;
     }
 
-    &__block {
+    &__price-calc {
         margin-top: 16px;
 
         &__title {
@@ -39,14 +39,6 @@
             margin-bottom: 8px;
             font-family: 'Roboto Condensed', sans-serif;
             text-transform: uppercase;
-        }
-
-        &__list {
-            display: flex;
-            flex-wrap: wrap;
-            column-gap: 8px;
-            row-gap: 8px;
-            line-height: 0;
         }
     }
 

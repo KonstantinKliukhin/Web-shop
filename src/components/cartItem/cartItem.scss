@@ -5,6 +5,12 @@
     display: grid;
     grid-template-columns: 1fr auto 200px;
     column-gap: 39px;
+    padding: 24px 0 32px;
+    border-top: 1px solid #E5E5E5;
+
+    &:last-child{
+        border-bottom: 1px solid #E5E5E5;
+    }
 
     &__counter {
         display: flex;
