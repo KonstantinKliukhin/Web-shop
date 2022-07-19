@@ -1,0 +1,22 @@
+@import '../../style/mixins';
+
+.single-item {
+    display: grid;
+    grid-template-columns: 732px 292px;
+    column-gap: 102px;
+    margin-bottom: 178px;
+
+    &__specification {
+        &__btn {
+            @include btn-green(52px, 292px, 1.6rem) {
+                margin: 20px 0 40px;
+            }
+        }
+
+        &__description {
+            font-size: 1.6rem;
+            line-height: 2.6rem;
+            font-family: 'Roboto', sans-serif;
+        }
+    }
+}

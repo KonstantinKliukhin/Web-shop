@@ -1,0 +1,57 @@
+.product-media {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 40px;
+
+    &__slider {
+        position: relative;
+
+        &__window {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+
+            .product-media__slider__slides-container {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                transition: transform 0.3s;
+
+                img {
+                    transition: all 0.3s;
+
+                    &:hover {
+                        transform: scale(1.1);
+                    }
+                }
+            }
+        }
+
+        &__arrow {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+
+            &-up {
+                top: -25px;
+                transform: translate(-50%) rotate(180deg);
+            }
+
+            &-down {
+                bottom: -25px;
+            }
+        }
+    }
+
+    &__current-img img {
+        transition: all 0.3s;
+        &:hover {
+            transform: scale(1.05)
+
+        }
+    }
+
+}
