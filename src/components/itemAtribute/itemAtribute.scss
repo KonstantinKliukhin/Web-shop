@@ -23,6 +23,10 @@
 
             &-color {
                 @include btn-color;
+
+                &-white {
+                    border: 1px solid #000;
+                }
             }
         }
     }

@@ -2,7 +2,7 @@ import { Component, Children, cloneElement } from "react";
 import PropTypes from 'prop-types';
 
 import arrow from '../../resources/img/arrow-down.svg';
-
+import noImageAvailable from '../../resources/img/noImageAvailable.jpg';
 
 import './productMedia.scss';
 
@@ -157,6 +157,7 @@ class ProductMedia extends Component {
 
 ProductMedia.defaultProps = {
     styles: {},
+    children: [<img src={noImageAvailable} alt='no images'/>]
 }
 
 ProductMedia.propTypes = {

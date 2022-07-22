@@ -19,6 +19,7 @@ function getProductsQueries() {
                     .addField(new Field('items', true)
                         .addFieldList(['id', 'displayValue', 'value'])
                     )
+                    .addCalculatedField('selectedItem', (res) => res?.items[1])
                 )
             )
     }
@@ -35,10 +36,11 @@ function getProductsQueries() {
                 )
             )
             .addField(new Field('attributes', true)
-                .addFieldList(['name', 'type'])
+                .addFieldList(['name', 'type', 'id'])
                 .addField(new Field('items', true)
                     .addFieldList(['id', 'displayValue', 'value'])
                 )
+                .addCalculatedField('selectedItem', (res) => res?.items[1])
             )
     }
 

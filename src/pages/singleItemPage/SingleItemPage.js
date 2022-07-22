@@ -3,20 +3,18 @@ import { Component } from "react";
 import ItemDescription from "../../components/itemDescription/itemDescription";
 import ProductMedia from "../../components/productMedia/ProductMedia";
 
-
 import { connect } from "react-redux";
 
-import { fetchProduct} from "../../slices/productsSlice";
+import { fetchProduct, activeAtributeChanged} from "../../slices/productsSlice";
+import { productAdded, productCountChanged } from "../../slices/cartSlice";
 
 import productsWithCorrectPriceSelector from "../../selectors/ProductWithCorrectPrice";
 import combineLoadingsSelector from "../../selectors/combineLoadingsSelector";
 
-
 import setContent from "../../utils/setContent";
 
-
-
 import './singleItemPage.scss';
+
 
 class SingleItemPage extends Component {
     componentDidMount() {
@@ -25,7 +23,7 @@ class SingleItemPage extends Component {
     }
 
     getSingleItemContent = () => {
-        const {product, loadingStatus} = this.props;
+        const {product, loadingStatus, activeAtributeChanged} = this.props;
 
         const singleItemContent = (product) => {
             const __description = product.description;
@@ -48,13 +46,22 @@ class SingleItemPage extends Component {
                                 name={product.name}
                                 brand={product.brand}
                                 attributes={product.attributes}
-                                priceDown={true}/>
+                                priceDown={true}
+                                onSelectAtttribute={activeAtributeChanged}
+                                />
                             <button 
+                                onClick={() => this.props.productAdded(product)}
                                 className="single-item__specification__btn">
                                 ADD TO CART
                             </button>
-                            <div className="single-item__specification__description" dangerouslySetInnerHTML={{__html: __description}}>
-                            </div>
+                            <button 
+                                onClick={() => this.props.productCountChanged({id: product.id, changes: {...product, count: 1}})}
+                                className="single-item__specification__btn">
+                                ADD TO CART
+                            </button>
+                            <div 
+                                className="single-item__specification__description" 
+                                dangerouslySetInnerHTML={{__html: __description}}/>
                         </div> 
                 </>
             )
@@ -87,6 +94,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-
-
-export default connect(mapStateToProps, {fetchProduct})(SingleItemPage)
+export default connect(mapStateToProps, {fetchProduct, activeAtributeChanged, productAdded, productCountChanged})(SingleItemPage)

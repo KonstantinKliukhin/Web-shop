@@ -30,7 +30,14 @@ export const fetchProduct = createAsyncThunk(
 const productSlice = createSlice({
     name: 'products',
     initialState,
-    reducers: {},
+    reducers: {
+        activeAtributeChanged: (state, action) => {
+            const attributeIndex = state.activeProduct.attributes.findIndex((attribute) => {
+                return attribute.id === action.payload.id;
+            })
+            state.activeProduct.attributes[attributeIndex].selectedItem = action.payload.selectedItem
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchProducts.pending, state => {state.productsLoadingStatus = 'loading'})
@@ -56,7 +63,9 @@ const productSlice = createSlice({
 })
 
 
-const { reducer} = productSlice;
+const { reducer, actions} = productSlice;
+
+export const {activeAtributeChanged} = actions;
 
 export const {selectAll : selectAllProducts} = productsAdapter.getSelectors(state => state.products);
 

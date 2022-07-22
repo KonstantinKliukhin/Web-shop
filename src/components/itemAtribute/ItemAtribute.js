@@ -9,33 +9,64 @@ import './itemAtribute.scss';
 
 class ItemAtribute extends Component {
 
-    selectItem = (value) => {
-        const {selectedItem, onChange, name} = this.props;
+    selectItem = (item) => {
+        const {attribute: {selectedItem, id}, onSelectAttribute} = this.props;
 
-        if (selectedItem?.value !== value) {
-            onChange(value, name)
+        if (selectedItem?.id !== item.id) {
+            onSelectAttribute({selectedItem: item, id})
         }
     }
 
 
     ItemList = () => {
-        const {list, color} = this.props;
+        const { attribute, style, onSelectAttribute } = this.props;
+        const { items, type, selectedItem } = attribute;
 
-        const selectedItemValue = this.props.selectedItem?.value;
+        const selectedItemId = selectedItem?.id;
 
-
-        if (list.length) {
+        if (items.length) {
             return (
-                list.map((item) => {
-                    const selected = item.value === selectedItemValue;
+                items.map((item) => {
+                    const selected = item.id === selectedItemId;
+                    const isColor = type === 'swatch';
+                    let onSelect;
+
+                    if (onSelectAttribute) {
+                        onSelect = () => this.selectItem(item);
+                    }
 
                     const itemClass = classNames({
-                        [`attribute-block__item${color ? '-color': ''}`]: true,
+                        'attribute-block__item': !isColor,
+                        'attribute-block__item-color': isColor,
+                        'attribute-block__item-color-white': item.displayValue === 'White',
                         'active': selected,
                     })
 
+                    const calculatedAttrs = () => {
+                        if (isColor) {
+                            return {
+                                'aria-label': item.displayValue,
+                                'style': {
+                                    ...style.item, 
+                                    background: item.value,
+                                }
+                            }
+                        }
+                        
+                        return {
+                            'aria-labelledby': item.displayValue,
+                            'style': style.item,
+                        }
+                    }
+
                     return (
-                        <li key={item.value} className={itemClass}>{color ? null: item.label}</li>
+                        <li 
+                            key={item.id} 
+                            className={itemClass}
+                            onClick={onSelect}
+                            {...calculatedAttrs()}>
+                            {isColor ? null: item.value}
+                        </li>
                     )
                 })
             )
@@ -43,16 +74,14 @@ class ItemAtribute extends Component {
     }
 
     render() {
-        const {name, style} = this.props;
-        const {block, title, list} = style;
-
+        const { attribute: {name}, style } = this.props;
+        const { block, title, items } = style;
         return (
-
             <div style={block} className="attribute-block">
                 <p style={title} className="attribute-block__title">
-                    {name}
+                    {name}:
                 </p>
-                <ul style={list} className="attribute-block__list">
+                <ul style={items} className="attribute-block__list">
                     {this.ItemList()}
                 </ul>
             </div>
@@ -62,25 +91,43 @@ class ItemAtribute extends Component {
 
 ItemAtribute.defaultProps = {
     style: {},
-    name: '',
+    id: '',
 }
 
 ItemAtribute.propTypes = {
-    name: PropTypes.string,
-    color: PropTypes.bool,
     style: PropTypes.shape({
         block: PropTypes.objectOf(PropTypes.string),
         title:PropTypes.objectOf(PropTypes.string),
-        list: PropTypes.objectOf(PropTypes.string),
+        items: PropTypes.objectOf(PropTypes.string),
         item: PropTypes.objectOf(PropTypes.string),
         selectedItem: PropTypes.objectOf(PropTypes.string),
       }),
-    onChange: PropTypes.func.isRequired,
 
-    list: PropTypes.arrayOf(PropTypes.shape({
-        value: PropTypes.string.isRequired,
-        label: PropTypes.string.isRequired,
-    })).isRequired,
+    onSelectAttribute: PropTypes.func,
+
+    attribute: PropTypes.shape({
+       items: PropTypes.arrayOf(PropTypes.shape({
+            value: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+            ]).isRequired,
+            displayValue: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+            ]).isRequired,
+            id: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+            ]).isRequired,
+        })).isRequired,
+
+        id: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+        ]).isRequired,
+
+        name: PropTypes.string,
+    }) 
 }
 
 export default ItemAtribute;

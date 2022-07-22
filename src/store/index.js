@@ -2,6 +2,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import categories from '../slices/categoriesSlice';
 import products from '../slices/productsSlice';
 import currencies from '../slices/currencieSlice';
+import cart from '../slices/cartSlice';
 // import client from '../services/opusClientConfig';
 // export const fetchMiddleware = storeAPI => next => action => {
 //     if (action?.payload?.type === 'query') {
@@ -24,7 +25,7 @@ import currencies from '../slices/currencieSlice';
 
 
 const store = configureStore({
-    reducer: {categories, products, currencies},
+    reducer: {categories, products, currencies, cart},
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
     devTools: process.env.NODE_ENV !== 'production',
 })
