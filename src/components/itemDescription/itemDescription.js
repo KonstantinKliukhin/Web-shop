@@ -7,13 +7,14 @@ import './itemDescription.scss';
 class ItemDescription extends Component {
     
     render() {
+        const {priceDown, price, name, brand} = this.props;
         return (
             <div className="item__description">
             <h3 className="item__description__brand">
-                Apollo 
+                {brand}
             </h3>
-            <h4 className="item__description__title">Running Short</h4>
-            {this.props.priceDown || <p className="item__description__price">$50.00</p>}
+            <h4 className="item__description__title">{name}</h4>
+            {priceDown || <p className="item__description__price">{`${price.currency.symbol}${price.amount}`}</p>}
             <ItemAtribute 
                 selectedItem = {{
                     value: 's',
@@ -79,12 +80,14 @@ class ItemDescription extends Component {
                         label: 'xxl',
                     }
                 ]}/>
-            {this.props.priceDown && (
+            {priceDown && (
                 <div className="item__description__price-calc">
                     <p className="item__description__price-calc__title">
                         PRICE:
                     </p>
-                    <p className="item__description__price">$50.00</p>
+                    <p className="item__description__price">
+                        {`${price.currency.symbol}${price.amount}`}
+                    </p>
                 </div>
             )}
         </div>

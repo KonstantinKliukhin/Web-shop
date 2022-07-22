@@ -1,40 +1,92 @@
 import { Component } from "react";
 
-import ItemDescription from '../../components/itemDescription/itemDescription';
+import ItemDescription from "../../components/itemDescription/itemDescription";
 import ProductMedia from "../../components/productMedia/ProductMedia";
 
-import product from '../../resources/img/product.png';
+
+import { connect } from "react-redux";
+
+import { fetchProduct} from "../../slices/productsSlice";
+
+import productsWithCorrectPriceSelector from "../../selectors/ProductWithCorrectPrice";
+import combineLoadingsSelector from "../../selectors/combineLoadingsSelector";
+
+
+import setContent from "../../utils/setContent";
+
 
 
 import './singleItemPage.scss';
 
 class SingleItemPage extends Component {
+    componentDidMount() {
+        const {fetchProduct, id} = this.props;
+        fetchProduct(id);
+    }
+
+    getSingleItemContent = () => {
+        const {product, loadingStatus} = this.props;
+
+        const singleItemContent = (product) => {
+            const __description = product.description;
+
+            return (
+                <>
+                    <ProductMedia
+                        smallImgWidth={80}
+                        smallImgHeight={80}
+                        bigImgWidth={610}
+                        bigImgHeight={511}
+                        gap={40}>
+                        {product?.gallery?.map((img, i) => (
+                            <img key={i} src={img} alt={product.name}/>
+                        ))}
+                    </ProductMedia>
+                        <div className="single-item__specification">
+                            <ItemDescription 
+                                price={product.price} 
+                                name={product.name}
+                                brand={product.brand}
+                                attributes={product.attributes}
+                                priceDown={true}/>
+                            <button 
+                                className="single-item__specification__btn">
+                                ADD TO CART
+                            </button>
+                            <div className="single-item__specification__description" dangerouslySetInnerHTML={{__html: __description}}>
+                            </div>
+                        </div> 
+                </>
+            )
+        }
+
+        return setContent([loadingStatus], singleItemContent, product)
+    }
+
+
     render() {
         return (
             <section className=" container single-item">
-                <ProductMedia
-                    smallImgWidth={80}
-                    smallImgHeight={80}
-                    bigImgWidth={610}
-                    bigImgHeight={511}
-                    gap={40}>
-                    <img src='https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-12-pro-family-hero?wid=940&amp;hei=1112&amp;fmt=jpeg&amp;qlt=80&amp;.v=1604021663000' alt="" />
-                    <img src={product} alt="" />
-                    <img src={product} alt="" />
-                    <img src={product} alt="" />
-                    <img src={product} alt="" />
-                    <img src={product} alt="" />
-                </ProductMedia>
-                <div className="single-item__specification">
-                    <ItemDescription priceDown={true}/>
-                    <button className="single-item__specification__btn">ADD TO CART</button>
-                    <p className="single-item__specification__description">
-                        Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses and party dresses from all your favorite brands.
-                    </p>
-                </div>
+                {this.getSingleItemContent()}
             </section>
         )
     }
 }
 
-export default SingleItemPage;
+const mapStateToProps = (state) => {    
+    return {
+        loadingStatus: combineLoadingsSelector(
+            state,
+            state => state.products.productLoadingStatus,
+            state => state.currencies.currenciesLoadingStatus,
+        ),
+        product: productsWithCorrectPriceSelector(
+            state => state.products.activeProduct,
+            state
+        )
+    }
+}
+
+
+
+export default connect(mapStateToProps, {fetchProduct})(SingleItemPage)

@@ -13,6 +13,7 @@
     background-color: #fff;
     color: $secondary--color;
     text-transform: uppercase;
+    cursor: pointer;
 
     &:hover, &.active {
         background-color: $secondary--color;
@@ -26,6 +27,7 @@
     width: $size;
     height: $size;
     background-color: red;
+    cursor: pointer;
     &:hover, &.active {
         box-shadow:  0 0 0 1px #fff,  0 0 0 2px $primary--color;
     }

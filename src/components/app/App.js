@@ -1,6 +1,6 @@
 import {Component} from 'react';
 
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 
 
 import NavBar from '../navBar/NavBar';
@@ -15,28 +15,29 @@ class App extends Component {
     render() {
         return (
             <Router>
-
-                    <header>
-                            <NavBar/>
-                    </header>
-                    <main>
+                <header>
+                    <NavBar/>
+                </header>
+                <main>
                     <Switch>
                         <Route exact path='/cart'>
                             <CartPage/> 
                         </Route>
-                        <Route exact path='/product'>
-                            <SingleItemPage/>
-                        </Route>
-                        <Route exact path='/'>
-                            <ProductsPage/>
+                        <Route exact path='/:category/:id' render={({match}) => <SingleItemPage id={match.params.id}/>}/>
+
+                        <Route 
+                            path='/:category' 
+                            exact 
+                            render={
+                                ({match}) => <ProductsPage pathName={match.params.category}/>
+                            }/>
+                        <Route path='/' exact>
+                            <Redirect to='/all'/>
                         </Route>
                     </Switch>
-                    </main>
+                </main>
             </Router>
-
-
         )
     }
 }
-
 export default App;

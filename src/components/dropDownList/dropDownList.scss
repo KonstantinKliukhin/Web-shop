@@ -21,14 +21,12 @@
       position: absolute;
       z-index: 100;
       width: 100%;
-      max-height: 215px;
       border-top: none;
       font-weight: 700;
       text-align: left;
       -webkit-overflow-scrolling: touch;
   
       .dropdown-list__scroll-list {
-        max-height: 215px;
         padding: 15px 0;
   
         .dropdown-list__item {

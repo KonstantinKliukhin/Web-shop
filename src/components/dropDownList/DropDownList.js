@@ -57,12 +57,12 @@ class DropDownList extends Component {
     }
 
     selectItem = (item) => {
-      const { value } = item;
+      const { value, activeTitle } = item;
       const { selectedItem } = this.state;
       const { name, onChange} = this.props;
   
       this.setState({
-        title: value,
+        title: activeTitle,
         isListOpen: false,
         selectedItem: item,
       }, () => selectedItem?.value !== value && onChange(item, name));
@@ -216,6 +216,10 @@ DropDownList.propTypes = {
   list: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
+    activeTitle: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element,
+    ])
   })).isRequired,
   
   name: PropTypes.string.isRequired,

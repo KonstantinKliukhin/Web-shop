@@ -19,6 +19,7 @@
 
                 img {
                     transition: all 0.3s;
+                    object-fit: cover;
 
                     &:hover {
                         transform: scale(1.1);
@@ -48,6 +49,7 @@
 
     &__current-img img {
         transition: all 0.3s;
+        object-fit: contain;
         &:hover {
             transform: scale(1.05)
 

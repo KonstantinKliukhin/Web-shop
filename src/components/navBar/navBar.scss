@@ -5,7 +5,7 @@
     height: 80px;
     padding: 0 15px;
     margin-bottom: 80px;
-    
+
     &__categories {
         max-width: 47%;
         height: 100%;
@@ -21,7 +21,7 @@
             height: 100%;
             line-height: 8rem;
             cursor: pointer;
-            &:hover {
+            &:hover, &.active {
                 color: $primary--color;
 
                 &::after {
@@ -39,6 +39,11 @@
             }
 
         }
+    }
+
+    .loading-img, .error-img {
+        max-width: 75px;
+        max-height: 75px;
     }
 
     &__brand {
