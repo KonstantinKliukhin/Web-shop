@@ -19,7 +19,7 @@ class ItemAtribute extends Component {
 
 
     ItemList = () => {
-        const { attribute, style, onSelectAttribute } = this.props;
+        const { attribute, style, onSelectAttribute, seletionIsDisabled, disabled} = this.props;
         const { items, type, selectedItem } = attribute;
 
         const selectedItemId = selectedItem?.id;
@@ -39,7 +39,9 @@ class ItemAtribute extends Component {
                         'attribute-block__item': !isColor,
                         'attribute-block__item-color': isColor,
                         'attribute-block__item-color-white': item.displayValue === 'White',
-                        'active': selected,
+                        'active': selected && !disabled,
+                        'selection-disabled': seletionIsDisabled,
+                        'disabled': disabled,
                     })
 
                     const calculatedAttrs = () => {
@@ -74,12 +76,12 @@ class ItemAtribute extends Component {
     }
 
     render() {
-        const { attribute: {name}, style } = this.props;
+        const { attribute, style } = this.props;
         const { block, title, items } = style;
         return (
             <div style={block} className="attribute-block">
                 <p style={title} className="attribute-block__title">
-                    {name}:
+                    {attribute?.name}:
                 </p>
                 <ul style={items} className="attribute-block__list">
                     {this.ItemList()}
@@ -127,7 +129,9 @@ ItemAtribute.propTypes = {
         ]).isRequired,
 
         name: PropTypes.string,
-    }) 
+    }),
+    disabled: PropTypes.bool,
+    selectionIsDisabled: PropTypes.bool,
 }
 
 export default ItemAtribute;

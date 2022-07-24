@@ -15,7 +15,7 @@ function getProductsQueries() {
                     )
                 )
                 .addField(new Field('attributes', true)
-                    .addFieldList(['name', 'type'])
+                    .addFieldList(['name', 'type', 'id'])
                     .addField(new Field('items', true)
                         .addFieldList(['id', 'displayValue', 'value'])
                     )

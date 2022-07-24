@@ -1,17 +1,16 @@
 import { Component } from 'react'
 
-import { Link } from 'react-router-dom';
-
 import ProductCard from '../productCard/ProductCard';
 
 import {fetchProducts, selectAllProducts} from '../../slices/productsSlice';
 import { activeCategoryChanged } from '../../slices/categoriesSlice';
+import { cartProductAdded } from '../../slices/cartSlice';
 
 import { connect} from 'react-redux';
 
 import setContent from '../../utils/setContent';
 
-import productsWithCorrectPriceSelector from '../../selectors/ProductWithCorrectPrice';
+import {productsWithCorrectPriceSelector} from '../../selectors/productWithCorrectPrice';
 import combineLoadingsSelector from '../../selectors/combineLoadingsSelector';
 
 
@@ -28,26 +27,24 @@ class ProductList extends Component {
   }
 
   getProductList = () => {
-    const {loadingStatus, products, activeCategory} = this.props;
+    const {loadingStatus, products, activeCategory, cartProductAdded} = this.props;
 
     const productList = ({products, activeCategory}) => {
       return products.map(product => {
         return (
-          <Link 
-            className="block" 
-            to={`/${activeCategory}/${product.id}`} 
-            key={product.id}>
-            <ProductCard 
+            <ProductCard
+              key={product.id}
+              cardPath={`/${activeCategory}/${product.id}`}   
               name={product.name}
               brand={product.brand}
               inStock={product.inStock}
               gallery={product.gallery[0]}
-              attributes={product.attributes}
               price = {product.price}
               id= {product.id}
+              onCartBtnClick={product.inStock ? 
+                () => cartProductAdded(product) : null}
               activeCategory
             />
-          </Link>
         )
       })
     }
@@ -82,6 +79,6 @@ const mapStateToProps = (state) => {
     activeCategory: state.categories.activeCategory,
   }
 }
-export default connect(mapStateToProps, {fetchProducts, activeCategoryChanged})(ProductList);
+export default connect(mapStateToProps, {fetchProducts, activeCategoryChanged, cartProductAdded})(ProductList);
 
 

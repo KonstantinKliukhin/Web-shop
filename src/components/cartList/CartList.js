@@ -3,16 +3,33 @@ import CartItem from "../cartItem/CartItem";
 
 
 
+
 class CartList extends Component {
 
     render() {
+        const {
+            type, 
+            cartProductsList, 
+            isItemSlider, 
+            cartProductsIds, 
+            onIncreaseCartProductCount, 
+            onDecreaseCartProductCount
+        } = this.props;
         
         return (
-            <ul className={`cart__list ${this.props.name}`}>
-                <CartItem/>
-                <CartItem/>
-                <CartItem/>
-                <CartItem/>
+            <ul className={`cart__list ${type}`}>
+                {
+                    cartProductsList.map((cartProduct, i) => {
+                        return (
+                            <CartItem 
+                                key={cartProductsIds[i]}
+                                slider={isItemSlider}
+                                cartProduct={cartProduct}
+                                onIncreaseCartProductCount={onIncreaseCartProductCount}
+                                onDecreaseCartProductCount={onDecreaseCartProductCount}
+                            />)
+                    })
+                }
             </ul>
         )
     }

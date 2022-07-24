@@ -7,6 +7,7 @@
     column-gap: 39px;
     padding: 24px 0 32px;
     border-top: 1px solid #E5E5E5;
+    object-fit: contain;
 
     &:last-child{
         border-bottom: 1px solid #E5E5E5;
@@ -30,6 +31,7 @@
 
     &__img {
         max-height: 288px;
+        object-fit: contain;
     }
 }
 

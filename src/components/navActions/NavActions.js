@@ -1,6 +1,6 @@
 import {Component} from 'react';
 
-import MiniCart from '../miniCart/MiniCart';
+import Cart from '../cart/Cart';
 import DropDownMenu from '../dropDownMenu/DropDownMenu';
 import DropDownList from '../dropDownList/DropDownList';
 
@@ -69,10 +69,16 @@ class NavActions extends Component {
     }
 
     render() {
+        const {cartQuantity} = this.props;
+
         const CartCounter = (
             <>
                 <img src={emptyCart} alt="emptyCart"/>
-                <div className="nav__cart-menu__item-count">3</div>
+                {cartQuantity > 0 && 
+                    (<div className="nav__cart-menu__item-count">
+                        {cartQuantity}
+                    </div>)
+                }
             </>
         )
 
@@ -84,7 +90,8 @@ class NavActions extends Component {
                     isOverlay
                     styles = {miniCartStyles}
                     title = {CartCounter}
-                    content={(props) => <MiniCart {...props}/>}
+                    mini={true}
+                    content={(props) => <Cart {...props}/>}
                 />
             </div>
         )
@@ -94,7 +101,8 @@ class NavActions extends Component {
 const mapStateToProps = (state) => {
     return {
         currencies: selectAllcurrencies(state),
-        currenciesLoadingStatus: state.currencies.currenciesLoadingStatus
+        currenciesLoadingStatus: state.currencies.currenciesLoadingStatus,
+        cartQuantity: state.cart.cartQuantity,
     }
 }
 export default connect(

@@ -6,7 +6,12 @@ import './itemDescription.scss';
 
 class ItemDescription extends Component {
     getAttributes = () => {
-        const {attributes, onSelectAtttribute} = this.props;
+        const {
+            attributes, 
+            onSelectAtttribute, 
+            attributesIsDisabled, 
+            attributesSelectionIsDisabled 
+        } = this.props;
 
         return attributes?.map(attribute => {
 
@@ -14,13 +19,16 @@ class ItemDescription extends Component {
                 <ItemAtribute 
                     key={attribute.id} 
                     attribute={attribute}
-                    onSelectAttribute={onSelectAtttribute} />
+                    onSelectAttribute={onSelectAtttribute}
+                    disabled={attributesIsDisabled}
+                    seletionIsDisabled={attributesSelectionIsDisabled}
+                     />
             )
         })
     }
     
     render() {
-        const {priceDown, price, name, brand } = this.props;
+        const {priceDown, price, name, brand, } = this.props;
 
         return (
             <div className="item__description">
@@ -28,7 +36,11 @@ class ItemDescription extends Component {
                 {brand}
             </h3>
             <h4 className="item__description__title">{name}</h4>
-            {priceDown || <p className="item__description__price">{`${price.currency.symbol}${price.amount}`}</p>}
+            {priceDown || 
+                <p className="item__description__price">
+                    {`${price.currency.symbol}${price.amount}`}
+                </p>
+            }
             {this.getAttributes()}
             {priceDown && (
                 <div className="item__description__price-calc">

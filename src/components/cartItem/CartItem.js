@@ -3,41 +3,69 @@ import { Component } from "react";
 import ItemDescription from "../itemDescription/itemDescription";
 import Slider from "../slider/Slider";
 
-import product from '../../resources/img/product.png';
-
 import './cartItem.scss';
 
 
 class CartItem extends Component {
 
+    onDecreaseCartProductCount = (e, cartProduct) => {
+        e.stopPropagation()
+        this.props.onDecreaseCartProductCount(cartProduct)
+    }
+
     render() {
+        const {
+            slider,
+            cartProduct, 
+            onIncreaseCartProductCount, 
+        } = this.props;
+
+        const {name, brand, attributes, price, gallery, count,} = cartProduct;
+
         let imagesView;
-        if (this.props.slider) {
+        if (slider && gallery.length > 1) {
             imagesView = (
                 <Slider height={288} width={200}>
-                    <img src={product} alt={'cardItem'} className="cart__item__img" />
-                    <img src={product} alt={'cardItem'} className="cart__item__img" />
-                    <img src={product} alt={'cardItem'} className="cart__item__img" />
+                    {gallery.map((image, i) => {
+                        return <img 
+                                    key={i}
+                                    src={image} 
+                                    alt={name} 
+                                    className='cart__item__img'/>
+                    })}
                 </Slider>
             ) 
         } else {
             imagesView = (
                 <>
-                    <img src={product} alt={'cardItem'} className="cart__item__img" />
+                    <img 
+                        src={gallery[0]} 
+                        alt={'cardItem'} 
+                        className="cart__item__img" />
                 </>
             )
         }
+
         return (
             <li className="cart__item">
-                <ItemDescription/>
+                <ItemDescription 
+                    name={name} 
+                    brand={brand} 
+                    attributes={attributes} 
+                    attributesSelectionIsDisabled
+                    price={price} />
                 <div className="cart__item__counter">
-                    <div className="cart__item__counter__btn">
+                    <button 
+                        onClick={() => onIncreaseCartProductCount(cartProduct)}
+                        className="cart__item__counter__btn">
                         +
-                    </div>
-                    <p className="cart__item__counter__count">1</p>
-                    <div className="cart__item__counter__btn">
+                    </button>
+                    <p className="cart__item__counter__count">{count}</p>
+                    <button
+                        onClick={(e) => this.onDecreaseCartProductCount(e, cartProduct)} 
+                        className="cart__item__counter__btn">
                         -
-                    </div>
+                    </button>
                 </div>
                 {imagesView}
             </li>

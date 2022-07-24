@@ -26,6 +26,10 @@
             align-items:center;
             border-radius: 100%;
             background-color: $primary--color;
+
+            &:hover {
+                transform: scale(1.5);
+            }
             &__img {
                 width: 50%;
                 height: 50%;

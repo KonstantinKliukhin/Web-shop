@@ -92,7 +92,7 @@ class DropDownMenu extends Component {
 
         const overlay = (
           <div 
-            onClick={this.close}
+            onClick={this.handleClickOutside}
             style={overlayStyles} 
             className={`dropdown-menu__overlay ${id}`}/>
         )

@@ -22,7 +22,7 @@
         }
     }
 
-    &__order-btn {
+    .btn-green {
         @include btn-green(43px, 279px, 1.4rem);
     }
 }

@@ -6,9 +6,9 @@ import ProductMedia from "../../components/productMedia/ProductMedia";
 import { connect } from "react-redux";
 
 import { fetchProduct, activeAtributeChanged} from "../../slices/productsSlice";
-import { productAdded, selectCartProductById} from "../../slices/cartSlice";
+import { cartProductAdded } from "../../slices/cartSlice";
 
-import productsWithCorrectPriceSelector from "../../selectors/ProductWithCorrectPrice";
+import {productsWithCorrectPriceSelector} from "../../selectors/productWithCorrectPrice";
 import combineLoadingsSelector from "../../selectors/combineLoadingsSelector";
 
 import setContent from "../../utils/setContent";
@@ -23,7 +23,7 @@ class SingleItemPage extends Component {
     }
 
     getSingleItemContent = () => {
-        const {product, loadingStatus, activeAtributeChanged, productAdded} = this.props;
+        const { product, loadingStatus, activeAtributeChanged, cartProductAdded } = this.props;
 
         const singleItemContent = (product) => {
             const __description = product.description;
@@ -47,12 +47,13 @@ class SingleItemPage extends Component {
                                 brand={product.brand}
                                 attributes={product.attributes}
                                 priceDown={true}
-                                onSelectAtttribute={activeAtributeChanged}
+                                onSelectAtttribute={product.inStock ? activeAtributeChanged : null}
+                                attributesIsDisabled={!product.inStock}
                                 />
                             <button 
-                                onClick={() => productAdded(product)}
-                                className="single-item__specification__btn">
-                                ADD TO CART
+                                onClick={product.inStock ? () => cartProductAdded(product): null}
+                                className={`single-item__specification__btn ${product.inStock ? '':'disabled'}`}>
+                                {product.inStock ? 'ADD TO CART': 'Out of stock'}
                             </button>
                             <div 
                                 className="single-item__specification__description" 
@@ -86,8 +87,7 @@ const mapStateToProps = (state) => {
             state => state.products.activeProduct,
             state
         ),
-        selectCartProductById: (id) => selectCartProductById(state, id),
     }
 }
 
-export default connect(mapStateToProps, {fetchProduct, activeAtributeChanged, productAdded})(SingleItemPage)
+export default connect(mapStateToProps, {fetchProduct, activeAtributeChanged, cartProductAdded})(SingleItemPage)

@@ -1,9 +1,39 @@
 @import '../../style/variables.scss';
 @import '../../style//mixins.scss';
 
+.cart {
+    margin-bottom: 274px;
 
+    &__title {
+        font-size: 3.2rem;
+        margin-bottom: 55px;
+    }
 
-.minicart-content {
+    &-empty__text {
+        font-size: 4.2rem;
+    }
+
+    &__count {
+        display: grid;
+        grid-template-columns: min-content min-content;
+        column-gap: 5px;
+        margin: 32px 0 20px;
+        font-size: 2.4rem;
+        line-height: 3.6rem;
+        font-weight: 500;
+
+        &__number {
+            font-weight: 700;
+        }
+    }
+
+    &__order-btn {
+        @include btn-green(43px, 279px, 1.4rem);
+    }
+}
+
+.minicart {
+    min-width: 325px;
     padding: 32px 16px;
     font-size: 1.6rem;
     line-height: 2.6rem;
@@ -12,7 +42,7 @@
 
     @include customScroll;
 
-    &__text {
+    &__title {
         margin-bottom: 32px;
         font-weight: 500;
     }
@@ -80,28 +110,30 @@
         }
     }
 
-    &__total-price {
+    &__count{
         margin-bottom: 34px;
+        display: flex;
+        justify-content: space-between;
 
-        &__text {
+        &__total {
             font-size: 1.6rem;
             line-height: 1.8rem;
             font-weight: 500;
             font-family: 'Roboto', sans-serif;
         }
 
-        &__count {
+        &__number {
             font-weight: 700;
         }
     }
 
 
     &__btns-wrapper {
-        .btn--right {
+        .btn-green{
             @include btn-green(43px, 140px, 1.4rem);
         }
 
-        .btn--left {
+        .btn-white {
             @include btn-white-black(43, 140, 1.4) {
                 font-family: 'Raleway', sans-serif;
                 font-weight: 600;
