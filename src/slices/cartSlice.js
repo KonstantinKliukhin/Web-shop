@@ -1,42 +1,60 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 
-const getUnicId = (product) => {
-    return product.id + product.attributes.reduce((prevAttr, currentAttr) => {
-        return prevAttr + currentAttr.selectedItem.id
+const getCartIdbyProductId = (product) => {
+    return product.id + product.attributes.reduce((acc, currentAttr) => {
+        return acc + '-' + currentAttr.selectedItem.id.toLowerCase()
     }, '')
 }
 
 const cartAdapter = createEntityAdapter({
-    selectId: getUnicId
+    selectId: getCartIdbyProductId
 });
 
 const initialState = cartAdapter.getInitialState({
-    itemsCount: 0,
+    cartQuantity: 0,
+    cartTotalPrice: [],
 });
+
+
 
 const categoriesSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
         productAdded: (state, action) => {
-            if (state.ids.includes(getUnicId(action.payload))) {
-                console.log(action.payload.id)
-                cartAdapter.updateOne({id: getUnicId(action.payload), changes: {...action.payload, count: state.entities.count ? state.entities.count + 1 : 1}}, state)
+            state.cartQuantity = state.cartQuantity + 1;
+
+            const cartProductId = getCartIdbyProductId(action.payload)
+
+            if(state.ids.includes(cartProductId)) {
+                const productCount = state.entities[cartProductId].count + 1
+
+                cartAdapter.updateOne(state, {id: getCartIdbyProductId(action.payload), changes: {count: productCount}})
+
+                action.payload.prices.forEach(price => {
+                    const currentIndex = state.cartTotalPrice.findIndex((totalPrice) => {
+                        return  totalPrice.currency.id === price.currency.id
+                     })
+    
+                    state.cartTotalPrice[currentIndex].amount += price.amount
+                });
+            } else {
+                cartAdapter.addOne(state, {...action.payload, count: 1})
+                state.cartTotalPrice = action.payload.prices
             }
-            cartAdapter.addOne(state, action.payload)
         },
-        productCountChanged: cartAdapter.updateOne
+
+            
     },
 })
 
 
 const {actions, reducer} = categoriesSlice;
 
-export const {selectAll : selectAllProducts} = cartAdapter.getSelectors(state => state.cart);
+export const {selectAll : selectCartProducts, selectById: selectCartProductById} = cartAdapter.getSelectors(state => state.cart);
 
 export const {
     productAdded,
-    productCountChanged,
 } = actions;
 
 export default reducer;

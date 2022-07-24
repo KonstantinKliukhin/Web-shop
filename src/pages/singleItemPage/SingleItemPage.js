@@ -6,7 +6,7 @@ import ProductMedia from "../../components/productMedia/ProductMedia";
 import { connect } from "react-redux";
 
 import { fetchProduct, activeAtributeChanged} from "../../slices/productsSlice";
-import { productAdded, productCountChanged } from "../../slices/cartSlice";
+import { productAdded, selectCartProductById} from "../../slices/cartSlice";
 
 import productsWithCorrectPriceSelector from "../../selectors/ProductWithCorrectPrice";
 import combineLoadingsSelector from "../../selectors/combineLoadingsSelector";
@@ -23,7 +23,7 @@ class SingleItemPage extends Component {
     }
 
     getSingleItemContent = () => {
-        const {product, loadingStatus, activeAtributeChanged} = this.props;
+        const {product, loadingStatus, activeAtributeChanged, productAdded} = this.props;
 
         const singleItemContent = (product) => {
             const __description = product.description;
@@ -50,12 +50,7 @@ class SingleItemPage extends Component {
                                 onSelectAtttribute={activeAtributeChanged}
                                 />
                             <button 
-                                onClick={() => this.props.productAdded(product)}
-                                className="single-item__specification__btn">
-                                ADD TO CART
-                            </button>
-                            <button 
-                                onClick={() => this.props.productCountChanged({id: product.id, changes: {...product, count: 1}})}
+                                onClick={() => productAdded(product)}
                                 className="single-item__specification__btn">
                                 ADD TO CART
                             </button>
@@ -90,8 +85,9 @@ const mapStateToProps = (state) => {
         product: productsWithCorrectPriceSelector(
             state => state.products.activeProduct,
             state
-        )
+        ),
+        selectCartProductById: (id) => selectCartProductById(state, id),
     }
 }
 
-export default connect(mapStateToProps, {fetchProduct, activeAtributeChanged, productAdded, productCountChanged})(SingleItemPage)
+export default connect(mapStateToProps, {fetchProduct, activeAtributeChanged, productAdded})(SingleItemPage)
