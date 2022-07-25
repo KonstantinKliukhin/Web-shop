@@ -1,13 +1,14 @@
-import {Component} from 'react';
+import {Component, lazy, Suspense} from 'react';
 
 import {BrowserRouter as Router, Route, Switch,} from 'react-router-dom';
 
+import Spinner from '../spinner/Spinner';
 
-import NavBar from '../navBar/NavBar';
-import CartPage from '../../pages/cartPage/CartPage';
-import ProductsPage from '../../pages/productsPage/ProductsPage';
-import SingleItemPage from '../../pages/singleItemPage/SingleItemPage';
 
+const NavBar = lazy(() => import('../navBar/NavBar'));
+const CartPage = lazy(() => import('../../pages/cartPage/CartPage'));
+const  ProductsPage = lazy(() => import('../../pages/productsPage/ProductsPage'));
+const SingleItemPage = lazy(() => import('../../pages/singleItemPage/SingleItemPage'));
 
 class App extends Component {
     render() {
@@ -17,19 +18,23 @@ class App extends Component {
                     <NavBar/>
                 </header>
                 <main>
-                    <Switch>
-                        <Route exact path='/cart'>
-                            <CartPage/> 
-                        </Route>
-                        <Route exact path='/:category/:id' render={({match}) => <SingleItemPage id={match.params.id}/>}/>
-
-                        <Route 
-                            path={['/:category', '/']} 
-                            exact 
-                            render={
-                                ({match}) => <ProductsPage pathName={match.params.category}/>
-                            }/>
-                    </Switch>
+                    <Suspense fallback={<Spinner/>}>
+                        <Switch>
+                            <Route exact path='/cart'>
+                                <CartPage/>
+                            </Route>
+                            <Route
+                                exact
+                                path='/:category/:id'
+                                render={({match}) => <SingleItemPage id={match.params.id}/>}/>
+                            <Route
+                                path={['/:category', '/']}
+                                exact
+                                render={
+                                    ({match}) => <ProductsPage pathName={match.params.category}/>
+                                }/>
+                        </Switch>
+                    </Suspense>
                 </main>
             </Router>
         )

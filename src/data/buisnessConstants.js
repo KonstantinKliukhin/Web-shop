@@ -1,0 +1,1 @@
+export const TAX_INDEX= 0.21;

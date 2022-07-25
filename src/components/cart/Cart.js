@@ -29,6 +29,7 @@ class Cart extends Component {
             cartProductsIds,
             cartProductCountIncreased,
             cartProductCountDecreased,
+            cartTaxPrice,
         } = this.props;
 
         const mainClass = mini ? 'minicart' : 'cart';
@@ -56,7 +57,7 @@ class Cart extends Component {
                     {mini || 
                         <>
                             <p className="cart__count__tax">Tax 21%: </p>
-                            <p className="cart__count__number">$42.00</p>
+                            <p className="cart__count__number">{`${cartTaxPrice?.currency?.symbol}${cartTaxPrice.amount}`}</p>
                             <p className="cart__count_quantity">Quantity: </p>
                             <p className="cart__count__number">{cartQuantity}</p>
                         </>
@@ -108,6 +109,12 @@ const totalPriceSelector = createSelector(
     toCorrectPriceSelector
 )
 
+const TaxPriceSelector = createSelector(
+    (state) => state.cart.cartTaxPrice,
+    (state) => state.currencies.activeCurrency,
+    toCorrectPriceSelector
+)
+
 const mapStateToProps = (state) => {
     return {
         cartProductsList: productsWithCorrectPriceSelector(
@@ -117,6 +124,7 @@ const mapStateToProps = (state) => {
         cartProductsIds: selectCartProductsIds(state),
         cartTotalPrice: totalPriceSelector(state),
         cartQuantity: state.cart.cartQuantity,
+        cartTaxPrice: TaxPriceSelector(state),
     }
 }
 

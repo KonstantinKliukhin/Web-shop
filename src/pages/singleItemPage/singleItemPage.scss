@@ -4,7 +4,6 @@
     display: grid;
     grid-template-columns: 732px 292px;
     column-gap: 102px;
-    margin-bottom: 178px;
 
     &__specification {
         &__btn {
@@ -14,9 +13,24 @@
         }
 
         &__description {
+            padding-right: 15px;
             font-size: 1.6rem;
             line-height: 2.6rem;
             font-family: 'Roboto', sans-serif;
+            height: 310px;
+            overflow-y: auto;
+            @include customScroll;
+
+            &__title {
+                font-family: 'Raleway';
+                font-weight: 500;
+                font-size: 2rem;
+                line-height: 3rem;
+                margin: 4rem 0;
+            }
         }
     }
 }
+
+
+

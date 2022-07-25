@@ -2,11 +2,15 @@ import { createSelector } from "@reduxjs/toolkit"
 
 
 const toCorrectPriceSelector = (prices, activeCurrency) => {
-  return (
-    prices?.filter((price) => {
-      return price.currency.id === activeCurrency.id
-    })[0]
-  )
+  if (prices.length && activeCurrency) {
+    return (
+      prices?.filter((price) => {
+        return price.currency.id === activeCurrency.id
+      })[0]
+    )
+  } else {
+    return null;
+  }
 }
 
 const productsWithCorrectPriceSelector = (productSelector, state) => {

@@ -1,5 +1,8 @@
 import { Component } from "react";
 
+import {Interweave} from 'interweave';
+import {transformToDescription} from '../../utils/transformToDescriptionJSX';
+
 import ItemDescription from "../../components/itemDescription/itemDescription";
 import ProductMedia from "../../components/productMedia/ProductMedia";
 
@@ -22,11 +25,17 @@ class SingleItemPage extends Component {
         fetchProduct(id);
     }
 
+
+
     getSingleItemContent = () => {
-        const { product, loadingStatus, activeAtributeChanged, cartProductAdded } = this.props;
+        const { 
+            product, 
+            loadingStatus, 
+            activeAtributeChanged, 
+            cartProductAdded 
+        } = this.props;
 
         const singleItemContent = (product) => {
-            const __description = product.description;
 
             return (
                 <>
@@ -37,27 +46,34 @@ class SingleItemPage extends Component {
                         bigImgHeight={511}
                         gap={40}>
                         {product?.gallery?.map((img, i) => (
-                            <img key={i} src={img} alt={product.name}/>
+                            <img key={i} src={img} alt={product?.name}/>
                         ))}
                     </ProductMedia>
                         <div className="single-item__specification">
                             <ItemDescription 
-                                price={product.price} 
-                                name={product.name}
-                                brand={product.brand}
-                                attributes={product.attributes}
+                                price={product?.price} 
+                                name={product?.name}
+                                brand={product?.brand}
+                                attributes={product?.attributes}
                                 priceDown={true}
                                 onSelectAtttribute={product.inStock ? activeAtributeChanged : null}
-                                attributesIsDisabled={!product.inStock}
+                                attributesIsDisabled={!product?.inStock}
                                 />
                             <button 
-                                onClick={product.inStock ? () => cartProductAdded(product): null}
-                                className={`single-item__specification__btn ${product.inStock ? '':'disabled'}`}>
-                                {product.inStock ? 'ADD TO CART': 'Out of stock'}
+                                onClick={product?.inStock ? () => cartProductAdded(product): null}
+                                className={`single-item__specification__btn ${product?.inStock ? '':'disabled'}`}>
+                                {product?.inStock ? 'ADD TO CART': 'Out of stock'}
                             </button>
-                            <div 
-                                className="single-item__specification__description" 
-                                dangerouslySetInnerHTML={{__html: __description}}/>
+                            <div className="single-item__specification__description">
+                                <Interweave 
+                                    content={product?.description} 
+                                    transform={
+                                        transformToDescription("single-item__specification__description")
+                                    } 
+                                    transformOnlyAllowList={false}
+                                    tagName={'div'}
+                                    allowList={['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'p', 'ul', 'li']}/>
+                            </div>
                         </div> 
                 </>
             )
