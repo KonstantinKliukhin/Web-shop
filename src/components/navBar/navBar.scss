@@ -16,6 +16,11 @@
         text-transform: uppercase;
         row-gap: 1.9rem;
 
+        .loading-img, .error-img {
+            width: 75px;
+            height: 75px;
+        }
+
         &__item {
             position: relative;
             height: 100%;
@@ -41,10 +46,7 @@
         }
     }
 
-    .loading-img, .error-img {
-        max-width: 75px;
-        max-height: 75px;
-    }
+
 
     &__brand {
         position: absolute;

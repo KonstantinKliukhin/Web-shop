@@ -57,7 +57,9 @@ class Cart extends Component {
                     {mini || 
                         <>
                             <p className="cart__count__tax">Tax 21%: </p>
-                            <p className="cart__count__number">{`${cartTaxPrice?.currency?.symbol}${cartTaxPrice.amount}`}</p>
+                            <p className="cart__count__number">
+                                {`${cartTaxPrice?.currency?.symbol}${cartTaxPrice.amount}`}
+                            </p>
                             <p className="cart__count_quantity">Quantity: </p>
                             <p className="cart__count__number">{cartQuantity}</p>
                         </>

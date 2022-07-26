@@ -19,7 +19,7 @@ const productsWithCorrectPriceSelector = (productSelector, state) => {
       productSelector,
       (activeCurrency, products) => {
 
-        if (!Object.keys(products).length) {
+        if (!Object.keys(products).length || !activeCurrency) {
           return products
         } 
 

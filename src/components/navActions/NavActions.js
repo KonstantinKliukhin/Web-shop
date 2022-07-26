@@ -4,14 +4,15 @@ import Cart from '../cart/Cart';
 import DropDownMenu from '../dropDownMenu/DropDownMenu';
 import DropDownList from '../dropDownList/DropDownList';
 
-import './navActions.scss';
+import {connect} from 'react-redux';
 import { currenciesStyles, miniCartStyles } from './dropDownStyles';
+
+import setContent from '../../utils/setContent';
 
 import emptyCart from '../../resources/img/emptyCart.svg';
 
-import {connect} from 'react-redux';
+import './navActions.scss';
 
-import setContent from '../../utils/setContent';
 
 import { 
     fetchCurrencies, 

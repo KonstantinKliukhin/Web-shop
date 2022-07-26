@@ -5,16 +5,20 @@ import {transformToDescription} from '../../utils/transformToDescriptionJSX';
 
 import ItemDescription from "../../components/itemDescription/itemDescription";
 import ProductMedia from "../../components/productMedia/ProductMedia";
+import Page404 from "../404/404";
+import Spinner from "../../components/spinner/Spinner";
 
 import { connect } from "react-redux";
+import { compose } from "@reduxjs/toolkit";
 
 import { fetchProduct, activeAtributeChanged} from "../../slices/productsSlice";
 import { cartProductAdded } from "../../slices/cartSlice";
 
 import {productsWithCorrectPriceSelector} from "../../selectors/productWithCorrectPrice";
-import combineLoadingsSelector from "../../selectors/combineLoadingsSelector";
 
 import setContent from "../../utils/setContent";
+
+import withSetCorrectCategory from "../../components/HOC/withSetCorrectCategory";
 
 import './singleItemPage.scss';
 
@@ -25,20 +29,20 @@ class SingleItemPage extends Component {
         fetchProduct(id);
     }
 
-
-
     getSingleItemContent = () => {
         const { 
             product, 
-            loadingStatus, 
+            productLoadingStatus, 
             activeAtributeChanged, 
             cartProductAdded 
         } = this.props;
 
+        const isActiveBtn = product?.inStock && product?.price; 
+
         const singleItemContent = (product) => {
 
             return (
-                <>
+                <section className=" container single-item">
                     <ProductMedia
                         smallImgWidth={80}
                         smallImgHeight={80}
@@ -56,13 +60,13 @@ class SingleItemPage extends Component {
                                 brand={product?.brand}
                                 attributes={product?.attributes}
                                 priceDown={true}
-                                onSelectAtttribute={product.inStock ? activeAtributeChanged : null}
+                                onSelectAtttribute={product?.inStock ? activeAtributeChanged : null}
                                 attributesIsDisabled={!product?.inStock}
                                 />
                             <button 
-                                onClick={product?.inStock ? () => cartProductAdded(product): null}
-                                className={`single-item__specification__btn ${product?.inStock ? '':'disabled'}`}>
-                                {product?.inStock ? 'ADD TO CART': 'Out of stock'}
+                                onClick={isActiveBtn ? () => cartProductAdded(product): null}
+                                className={`single-item__specification__btn ${isActiveBtn ? '':'disabled'}`}>
+                                {isActiveBtn ? 'ADD TO CART': 'Out of stock'}
                             </button>
                             <div className="single-item__specification__description">
                                 <Interweave 
@@ -75,30 +79,26 @@ class SingleItemPage extends Component {
                                     allowList={['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'p', 'ul', 'li']}/>
                             </div>
                         </div> 
-                </>
+                </section>
             )
         }
 
-        return setContent([loadingStatus], singleItemContent, product)
+        return setContent([productLoadingStatus], singleItemContent, product, Spinner, Page404)
     }
 
 
     render() {
         return (
-            <section className=" container single-item">
+            <>
                 {this.getSingleItemContent()}
-            </section>
+            </>
         )
     }
 }
 
 const mapStateToProps = (state) => {    
     return {
-        loadingStatus: combineLoadingsSelector(
-            state,
-            state => state.products.productLoadingStatus,
-            state => state.currencies.currenciesLoadingStatus,
-        ),
+        productLoadingStatus: state.products.productLoadingStatus,
         product: productsWithCorrectPriceSelector(
             state => state.products.activeProduct,
             state
@@ -106,4 +106,16 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {fetchProduct, activeAtributeChanged, cartProductAdded})(SingleItemPage)
+
+
+export default compose(
+    withSetCorrectCategory,
+    connect(
+        mapStateToProps, 
+        {
+            fetchProduct, 
+            activeAtributeChanged, 
+            cartProductAdded
+        }
+    ),
+)(SingleItemPage)

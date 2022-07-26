@@ -11,7 +11,7 @@ const fetchData = (getQuery) => (...args) => {
     return  (async function() {
         const result = await client.post(getQuery(args));
 
-        if (result?.errors?.length) {
+        if (result?.errors?.length || Object.values(result).every(elem => elem === null)) {
             throw new Error(result.errors)
         }
     

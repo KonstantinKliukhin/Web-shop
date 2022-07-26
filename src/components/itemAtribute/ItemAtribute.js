@@ -19,7 +19,14 @@ class ItemAtribute extends Component {
 
 
     ItemList = () => {
-        const { attribute, style, onSelectAttribute, seletionIsDisabled, disabled} = this.props;
+        const { 
+            attribute, 
+            style, 
+            onSelectAttribute, 
+            seletionIsDisabled, 
+            disabled
+        } = this.props;
+
         const { items, type, selectedItem } = attribute;
 
         const selectedItemId = selectedItem?.id;
@@ -66,7 +73,8 @@ class ItemAtribute extends Component {
                             key={item.id} 
                             className={itemClass}
                             onClick={onSelect}
-                            {...calculatedAttrs()}>
+                            {...calculatedAttrs()}
+                        >
                             {isColor ? null: item.value}
                         </li>
                     )

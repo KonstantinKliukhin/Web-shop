@@ -4,11 +4,14 @@ import {BrowserRouter as Router, Route, Switch,} from 'react-router-dom';
 
 import Spinner from '../spinner/Spinner';
 
+import ErrorBoundery from '../errorBoundary/ErrorBoundary';
 
 const NavBar = lazy(() => import('../navBar/NavBar'));
 const CartPage = lazy(() => import('../../pages/cartPage/CartPage'));
 const  ProductsPage = lazy(() => import('../../pages/productsPage/ProductsPage'));
 const SingleItemPage = lazy(() => import('../../pages/singleItemPage/SingleItemPage'));
+const Page404 = lazy(() => import('../../pages/404/404'));
+
 
 class App extends Component {
     render() {
@@ -26,13 +29,24 @@ class App extends Component {
                             <Route
                                 exact
                                 path='/:category/:id'
-                                render={({match}) => <SingleItemPage id={match.params.id}/>}/>
+                                render={({match}) => (
+                                    <ErrorBoundery>
+                                        <SingleItemPage 
+                                            categoryPath={match.params.category} 
+                                            id={match.params.id}/>
+                                    </ErrorBoundery>
+                                )}
+                            />
                             <Route
                                 path={['/:category', '/']}
                                 exact
                                 render={
-                                    ({match}) => <ProductsPage pathName={match.params.category}/>
-                                }/>
+                                    ({match}) => <ProductsPage categoryPath={match.params.category}/>
+                                }
+                            />
+                            <Route path='*'>
+                                <Page404/>
+                            </Route>
                         </Switch>
                     </Suspense>
                 </main>
@@ -40,4 +54,5 @@ class App extends Component {
         )
     }
 }
+
 export default App;

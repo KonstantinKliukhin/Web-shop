@@ -63,6 +63,8 @@ const changeProductCount = (state, id, adapter, difference) => {
     }
 }
 
+
+
 const categoriesSlice = createSlice({
     name: 'cart',
     initialState,

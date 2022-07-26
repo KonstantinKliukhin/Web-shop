@@ -1,0 +1,68 @@
+@import '../../style/mixins';
+
+.cart__list.mini-cart {
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+    margin-bottom: 32px;
+    max-height: calc(100vh - 337px);
+    overflow-y: auto;
+
+    @include customScroll;
+
+    .cart__item {
+        grid-template-columns: 136px 24px 121px;
+        column-gap: 8px;
+        padding: 0;
+        border: 0;
+
+        .item__description {
+            &__title, &__brand {
+                font-size: 1.6rem;
+                line-height: 2.56rem;
+                font-weight: 300;
+                margin: 0;
+            }
+        
+            &__price {
+                margin: 4px 0 0 0;
+                font-weight: 500;
+                font-size: 1.6rem;
+                line-height: 2.6rem;
+            }
+        
+            .attribute-block {
+                margin-top: 8px;
+        
+                &__title {
+                    font-size: 1.4rem;
+                    line-height: 1.6rem;
+                    font-weight: 400;
+                    text-transform: unset;
+                }
+                &__item {
+                    @include btn-white-black(24, 24, 1.4);
+
+                    &-color {
+                        @include btn-color(16px);
+                    }
+                }
+            }
+        }
+        
+    
+        &__counter {
+            &__btn {
+                @include btn-white-black(24, 24, 1.4);
+            }
+
+            &__count {
+                font-size: 1.6rem;
+            }
+        }
+    
+        &__img {
+            max-height: 190px;
+        }
+    }
+}

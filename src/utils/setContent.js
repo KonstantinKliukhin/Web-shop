@@ -1,17 +1,17 @@
 import Spinner from '../components/spinner/Spinner';
-import error from '../resources/img/error.png';
+import ErrorMessage from '../components/errorMessage/ErrorMessage';
 
-const setContent = (process, render, data, Loading = Spinner,) => {
+const setContent = (process, render, data, Loading = Spinner, ErrorComponent = ErrorMessage) => {
     if(process.includes('idle')) {
         return null
     } else if(process.includes('error')) {
-        return <img className='error-img' src={error} alt='error'/>;
+        return <ErrorComponent/>
     } else if(process.includes('loading')) {
         return Loading ? <Loading/> : null;
     } else if (process.every(element => element === 'confirmed')) {
         return render(data) 
     } else {
-        throw new Error('unexpected process state');
+        throw new Error(`unexpected process state: ${process}`);
     }
 }
 

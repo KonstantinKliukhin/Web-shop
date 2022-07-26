@@ -6,7 +6,7 @@ function getProductsQueries() {
             .addArgument('input', 'CategoryInput', {'title': categoryTitle[0]})
             .addTransformation(res => res.products)
             .addField(new Field('products', true)
-                .addFieldList(['id', 'name', 'brand', 'inStock, gallery'])
+                .addFieldList(['id', 'name', 'brand', 'inStock', 'gallery'])
                 .addField(new Field('prices', true)
                     .addField('amount')
                     .addField(new Field('currency')

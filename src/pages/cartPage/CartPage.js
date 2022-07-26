@@ -1,7 +1,5 @@
 import { Component } from "react";
 
-import './cartPage.scss';
-
 import Cart from "../../components/cart/Cart";
 
 

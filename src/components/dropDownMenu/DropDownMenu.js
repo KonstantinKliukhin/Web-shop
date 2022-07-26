@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import './dropDownMenu.scss';
 
+
 const overlayRoot = document.getElementById('overlay-root');
 
 class DropDownMenu extends Component {
@@ -102,8 +103,12 @@ class DropDownMenu extends Component {
                 <button
                   onClick={this.onToggleMenu}
                   className={`dropdown-menu__header ${id}`}
-                  style={header}>
-                  <div className={`dropdown-menu__title ${id}`} style={headerTitle}>
+                  style={header}
+                >
+                  <div 
+                    className={`dropdown-menu__title ${id}`} 
+                    style={headerTitle}
+                  >
                     {title}
                   </div>
                 </button>
@@ -114,9 +119,14 @@ class DropDownMenu extends Component {
                   )
                 }
                 {isMenuOpen && 
-                  <div style={list} ref={this.setWrapperRef} className={`dropdown-menu__list ${id}`}>
-                      {content({...props, onToggleMenu: this.onToggleMenu})}
-                  </div>}
+                  <div 
+                    style={list} 
+                    ref={this.setWrapperRef} 
+                    className={`dropdown-menu__list ${id}`}
+                  >
+                    {content({...props, onToggleMenu: this.onToggleMenu})}
+                  </div>
+                }
               </div>
         )
     }

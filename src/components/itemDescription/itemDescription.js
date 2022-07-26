@@ -14,7 +14,6 @@ class ItemDescription extends Component {
         } = this.props;
 
         return attributes?.map(attribute => {
-
             return (
                 <ItemAtribute 
                     key={attribute.id} 
@@ -22,13 +21,13 @@ class ItemDescription extends Component {
                     onSelectAttribute={onSelectAtttribute}
                     disabled={attributesIsDisabled}
                     seletionIsDisabled={attributesSelectionIsDisabled}
-                     />
+                />
             )
         })
     }
     
     render() {
-        const {priceDown, price, name, brand, } = this.props;
+        const { priceDown, price, name, brand, } = this.props;
 
         return (
             <div className="item__description">
@@ -38,7 +37,7 @@ class ItemDescription extends Component {
             <h4 className="item__description__title">{name}</h4>
             {priceDown || 
                 <p className="item__description__price">
-                    {`${price.currency.symbol}${price.amount}`}
+                    {`${price?.currency?.symbol}${price?.amount}`}
                 </p>
             }
             {this.getAttributes()}
@@ -48,7 +47,9 @@ class ItemDescription extends Component {
                         PRICE:
                     </p>
                     <p className="item__description__price">
-                        {`${price.currency.symbol}${price.amount}`}
+                        {price ? 
+                            `${price?.currency?.symbol}${price?.amount}` : 
+                            'No information about price'}
                     </p>
                 </div>
             )}
