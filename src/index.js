@@ -5,11 +5,23 @@ import './style/style.scss'
 
 import store from './store';
 
+import debounce from './utils/debounce';
+import {saveState} from './services/browserStorage';
+
+import {StrictMode} from 'react';
+
+store.subscribe(
+  debounce(() => {
+      saveState(store.getState())
+  }, 800)
+)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <App />
+    <StrictMode>
+      <App />
+    </StrictMode>
   </Provider>
 );
 

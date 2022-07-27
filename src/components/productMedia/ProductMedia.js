@@ -157,7 +157,7 @@ class ProductMedia extends Component {
 
 ProductMedia.defaultProps = {
     styles: {},
-    children: [<img src={noImageAvailable} alt='no images'/>]
+    children: [<img src={noImageAvailable} alt='no images'/>],
 }
 
 ProductMedia.propTypes = {

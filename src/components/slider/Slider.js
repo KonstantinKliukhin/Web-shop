@@ -3,8 +3,10 @@ import { Component, Children, cloneElement } from "react";
 import PropTypes from 'prop-types';
 
 import arrow from '../../resources/img/arrowDownWhite.svg';
+import noImageAvailable from '../../resources/img/noImageAvailable.jpg';
 
 import './slider.scss';
+
 
 class Slider extends Component {
     constructor(props) {
@@ -17,13 +19,15 @@ class Slider extends Component {
     }
 
     componentDidMount() {
+        const {height, width, children} = this.props;
+
         this.setState({
-            pages: Children.map(this.props.children, (child) => {
+            pages: Children.map(children, (child) => {
                 return cloneElement(child, {
                     style: {
-                        height: `${this.props.height}px`,
-                        minWidth: `${this.props.width}px`,
-                        maxWidth: `${this.props.width}px`,
+                        height: `${height}px`,
+                        minWidth: `${width}px`,
+                        maxWidth: `${width}px`,
                     }
                 })
             })
@@ -109,6 +113,7 @@ Slider.defaultProps = {
     height: 200,
     width: 200,
     styles: {},
+    children: [<img src={noImageAvailable} alt='no images'/>],
 }
 
 Slider.propTypes = {

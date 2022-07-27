@@ -1,7 +1,11 @@
-import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createEntityAdapter, createAction } from "@reduxjs/toolkit";
 
 import {fetchProductsByCategory, fetchProductById} from '../services';
 
+import getProductsQueries from "../services/queries/productsQueries";
+
+
+const {getProductsByCategoryQuery} = getProductsQueries()
 
 const productsAdapter = createEntityAdapter();
 
@@ -11,12 +15,12 @@ const initialState = productsAdapter.getInitialState({
     activeProduct: {},
 })
 
-export const fetchProducts = createAsyncThunk(
-    'products/fetchProducts',
-    async (categoryName) => {
-        return await fetchProductsByCategory(categoryName);
+export const fetchProducts = (categoryName) => {
+    return {
+        type: 'products/fetchProducts',
+        payload: getProductsByCategoryQuery([categoryName]),
     }
-)
+}
 
 export const fetchProduct = createAsyncThunk(
     'products/fetchProduct',
@@ -36,17 +40,21 @@ const productSlice = createSlice({
                 return attribute.id === action.payload.id;
             })
             state.activeProduct.attributes[attributeIndex].selectedItem = action.payload.selectedItem
+        },
+        FetchProducts: (state, action) => {
+            state.productsLoadingStatus = 'loading'
         }
+
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchProducts.pending, state => {state.productsLoadingStatus = 'loading'})
-            .addCase(fetchProducts.fulfilled, (state, action) => {
+            .addCase('products/fetchProducts/pending', state => {state.productsLoadingStatus = 'loading'})
+            .addCase('products/fetchProducts/fulfilled', (state, action) => {
                 state.productsLoadingStatus = 'confirmed';
                 productsAdapter.setAll(state, action.payload.category)
             })
-            .addCase(fetchProducts.rejected, (state, action) => {
-                console.log(action)
+            .addCase('products/fetchProducts/rejected', (state, action) => {
+                console.error(action)
                 state.productsLoadingStatus = 'error';
             })
             .addCase(fetchProduct.pending, state => {state.productLoadingStatus = 'loading'})
@@ -65,7 +73,7 @@ const productSlice = createSlice({
 
 const { reducer, actions} = productSlice;
 
-export const {activeAtributeChanged} = actions;
+export const {activeAtributeChanged, FetchingAllProductsStarted} = actions;
 
 export const {selectAll : selectAllProducts} = productsAdapter.getSelectors(state => state.products);
 

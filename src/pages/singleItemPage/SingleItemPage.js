@@ -34,12 +34,17 @@ class SingleItemPage extends Component {
             product, 
             productLoadingStatus, 
             activeAtributeChanged, 
-            cartProductAdded 
+            cartProductAdded,
+            activeCategory,
         } = this.props;
 
         const isActiveBtn = product?.inStock && product?.price; 
 
         const singleItemContent = (product) => {
+
+            if (product?.category !== activeCategory && activeCategory !== 'all') {
+                return <Page404/>
+            }
 
             return (
                 <section className=" container single-item">
@@ -48,7 +53,8 @@ class SingleItemPage extends Component {
                         smallImgHeight={80}
                         bigImgWidth={610}
                         bigImgHeight={511}
-                        gap={40}>
+                        gap={40}
+                    >
                         {product?.gallery?.map((img, i) => (
                             <img key={i} src={img} alt={product?.name}/>
                         ))}
@@ -62,10 +68,11 @@ class SingleItemPage extends Component {
                                 priceDown={true}
                                 onSelectAtttribute={product?.inStock ? activeAtributeChanged : null}
                                 attributesIsDisabled={!product?.inStock}
-                                />
+                            />
                             <button 
                                 onClick={isActiveBtn ? () => cartProductAdded(product): null}
-                                className={`single-item__specification__btn ${isActiveBtn ? '':'disabled'}`}>
+                                className={`single-item__specification__btn ${isActiveBtn ? '':'disabled'}`}
+                            >
                                 {isActiveBtn ? 'ADD TO CART': 'Out of stock'}
                             </button>
                             <div className="single-item__specification__description">
@@ -76,7 +83,8 @@ class SingleItemPage extends Component {
                                     } 
                                     transformOnlyAllowList={false}
                                     tagName={'div'}
-                                    allowList={['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'p', 'ul', 'li']}/>
+                                    allowList={['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'p', 'ul', 'li']}
+                                />
                             </div>
                         </div> 
                 </section>
@@ -103,6 +111,7 @@ const mapStateToProps = (state) => {
             state => state.products.activeProduct,
             state
         ),
+        activeCategory: state.categories.activeCategory,
     }
 }
 

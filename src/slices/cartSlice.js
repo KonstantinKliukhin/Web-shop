@@ -34,7 +34,6 @@ const changeCartPrices = (state, product, difference) => {
             const oldTotalPrice = state.cartTotalPrice[currentTotalIndex].amount;
             
             const newTotalPrice = parseFloat((oldTotalPrice + price.amount * difference).toFixed(2));
-            console.log(newTotalPrice)
 
             state.cartTaxPrice[currentTaxIndex].amount = parseFloat((newTotalPrice * TAX_INDEX).toFixed(2));
 
@@ -51,7 +50,6 @@ const changeCartPrices = (state, product, difference) => {
 }
 
 const changeProductCount = (state, id, adapter, difference) => {
-
     state.cartQuantity += difference;
 
     const newProductCount = state.entities[id].count + difference;
@@ -63,6 +61,29 @@ const changeProductCount = (state, id, adapter, difference) => {
     }
 }
 
+const validateToCartProduct = (product) => {
+    if (!product?.id || 
+        !product?.name || 
+        !product?.brand || 
+        !product?.prices || 
+        !product?.inStock ||
+        !product?.prices?.some(
+            price => (price?.currency?.id != null || typeof price?.amount === 'number')
+        )
+    ) {
+        console.error(`Attempt to add an invalid product to the cart`, product)
+    } else {
+        return ({
+            id: product.id,
+            name: product.name,
+            brand: product.brand,
+            prices: product.prices,
+            gallery: product.gallery,
+            attributes: product.attributes,
+        })
+    }
+}
+
 
 
 const categoriesSlice = createSlice({
@@ -71,14 +92,16 @@ const categoriesSlice = createSlice({
     reducers: {
         cartProductAdded: (state, action) => {
 
-            const cartProductId = getCartIdbyProductId(action.payload)
+            const product = validateToCartProduct(action.payload)
 
-            changeCartPrices(state, action.payload, 1);
+            const cartProductId = getCartIdbyProductId(product)
+
+            changeCartPrices(state, product, 1);
 
             if(state.ids.includes(cartProductId)) {
                 changeProductCount(state, cartProductId, cartAdapter, 1)
             } else {
-                cartAdapter.addOne(state, {...action.payload, count: 1})
+                cartAdapter.addOne(state, {...product, count: 1})
 
                 state.cartQuantity = state.cartQuantity + 1;
             }

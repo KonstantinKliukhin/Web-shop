@@ -3,6 +3,8 @@ import { Component } from "react";
 import ItemDescription from "../itemDescription/itemDescription";
 import Slider from "../slider/Slider";
 
+import noImageAvailable from '../../resources/img/noImageAvailable.jpg';
+
 import './cartItem.scss';
 
 
@@ -15,7 +17,7 @@ class CartItem extends Component {
 
     render() {
         const {
-            slider,
+            isSlider,
             cartProduct, 
             onIncreaseCartProductCount, 
         } = this.props;
@@ -23,7 +25,8 @@ class CartItem extends Component {
         const {name, brand, attributes, price, gallery, count,} = cartProduct;
 
         let imagesView;
-        if (slider && gallery.length > 1) {
+
+        if (isSlider && gallery?.length > 1) {
             imagesView = (
                 <Slider height={288} width={200}>
                     {gallery.map((image, i) => {
@@ -37,12 +40,11 @@ class CartItem extends Component {
             ) 
         } else {
             imagesView = (
-                <>
                     <img 
-                        src={gallery[0]} 
-                        alt={'cardItem'} 
-                        className="cart__item__img" />
-                </>
+                        src={gallery?.length ? gallery[0] : noImageAvailable} 
+                        alt={name} 
+                        className="cart__item__img" 
+                    />
             )
         }
 

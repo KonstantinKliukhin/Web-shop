@@ -22,7 +22,7 @@ class CartList extends Component {
                         return (
                             <CartItem 
                                 key={cartProductsIds[i]}
-                                slider={isItemSlider}
+                                isSlider={isItemSlider}
                                 cartProduct={cartProduct}
                                 onIncreaseCartProductCount={onIncreaseCartProductCount}
                                 onDecreaseCartProductCount={onDecreaseCartProductCount}

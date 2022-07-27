@@ -27,7 +27,7 @@ function getProductsQueries() {
     const getProductById = (id) => {
         return new Query('product')
             .addArgument('id','String!', id[0])
-            .addFieldList(['id', 'name', 'brand', 'inStock', 'gallery', 'description'])
+            .addFieldList(['id', 'name', 'brand', 'inStock', 'gallery', 'description', 'category'])
             .addField(new Field('prices', true)
                 .addField('amount')
                 .addField(new Field('currency')

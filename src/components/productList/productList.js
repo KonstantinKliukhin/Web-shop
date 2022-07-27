@@ -34,6 +34,7 @@ class ProductList extends Component {
 
     const productList = ({products, activeCategory}) => {
       return products?.map(product => {
+
         return (
             <ProductCard
               key={product?.id}
@@ -52,13 +53,12 @@ class ProductList extends Component {
       })
     }
 
-
-
     return setContent([productsLoadingStatus], productList, {products, activeCategory})
   }
 
   render() {
     const {activeCategory, title} = this.props;
+
     return (
       <>
         {title && <h1 className="products__title">{activeCategory}</h1>}
@@ -72,11 +72,11 @@ class ProductList extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    productsLoadingStatus: state.products.productsLoadingStatus,
     products: productsWithCorrectPriceSelector(
       state => selectAllProducts(state),
       state
     ),
-    productsLoadingStatus: state.products.productsLoadingStatus,
     activeCategory: state.categories.activeCategory,
   }
 }
