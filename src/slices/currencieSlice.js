@@ -1,21 +1,19 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
 
-import {fetchAllCurrencies} from '../services'
+import { getAllCurrencies } from "../services/queries/currencyQueries";
 
-
-const currenciesAdapter = createEntityAdapter();
-
-const initialState = currenciesAdapter.getInitialState({
-    activeCurrency: null,
+const initialState = {
     currenciesLoadingStatus: 'idle',
-})
+    currencies: [],
+    activeCurrency: null,
+}
 
-export const fetchCurrencies = createAsyncThunk(
-    'currency/fetchCurrencies',
-    async () => {
-        return await fetchAllCurrencies();
+export const fetchCurrencies = () => {
+    return {
+        type: 'currencies/fetchCurrencies',
+        payload: getAllCurrencies(),
     }
-)
+}
 
 const currenciesSlice = createSlice({
     name: 'currencies',
@@ -27,25 +25,22 @@ const currenciesSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchCurrencies.pending, state => {
-                state.currenciesLoadingStatus = 'loading'
+            .addCase('currencies/fetchCurrencies/pending', state => {
+                state.currenciesLoadingStatus = 'loading';
             })
-            .addCase(fetchCurrencies.fulfilled, (state, action) => {
+            .addCase('currencies/fetchCurrencies/fulfilled', (state, action) => {
                 state.currenciesLoadingStatus = 'confirmed';
-                currenciesAdapter.setAll(state, action.payload.currencies)
+                state.currencies = action.payload.currencies;
             })
-            .addCase(fetchCurrencies.rejected, (state, action) => {
-                console.log(action)
+            .addCase('currencies/fetchCurrencies/rejected', (state, action) => {
+                console.error(action);
                 state.currenciesLoadingStatus = 'error';
             })
             .addDefaultCase(() => {})
     }
 })
 
-
 const {actions, reducer} = currenciesSlice;
-
-export const {selectAll : selectAllcurrencies} = currenciesAdapter.getSelectors(state => state.currencies);
 
 export const {
     activeCurrencyChanged,

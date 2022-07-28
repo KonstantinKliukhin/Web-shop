@@ -2,8 +2,8 @@ import { Component, Children, cloneElement } from "react";
 
 import PropTypes from 'prop-types';
 
-import arrow from '../../resources/img/arrowDownWhite.svg';
-import noImageAvailable from '../../resources/img/noImageAvailable.jpg';
+import arrow from '../../assets/images/arrowDownWhite.svg';
+import noImageAvailable from '../../assets/images/noImageAvailable.jpg';
 
 import './slider.scss';
 

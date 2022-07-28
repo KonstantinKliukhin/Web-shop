@@ -9,16 +9,12 @@ import { currenciesStyles, miniCartStyles } from './dropDownStyles';
 
 import setContent from '../../utils/setContent';
 
-import emptyCart from '../../resources/img/emptyCart.svg';
+import emptyCart from '../../assets/images/emptyCart.svg';
 
 import './navActions.scss';
 
 
-import { 
-    fetchCurrencies, 
-    selectAllcurrencies, 
-    activeCurrencyChanged 
-} from '../../slices/currencieSlice';
+import { fetchCurrencies, activeCurrencyChanged } from '../../slices/currencieSlice';
 
 class NavActions extends Component {
 
@@ -101,7 +97,7 @@ class NavActions extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        currencies: selectAllcurrencies(state),
+        currencies: state.currencies.currencies,
         currenciesLoadingStatus: state.currencies.currenciesLoadingStatus,
         cartQuantity: state.cart.cartQuantity,
     }

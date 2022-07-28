@@ -1,4 +1,4 @@
-const KEY = 'reduxStore';
+const KEY = 'reduxStoreCart';
 
 export function loadState() {
     try {

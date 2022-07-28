@@ -1,9 +1,9 @@
 import { Component } from "react";
 import NavActions from "../navActions/NavActions";
 import './navBar.scss'
-import brand from '../../resources/img/brand.svg'
+import brand from '../../assets/images/brand.svg'
 import {connect} from 'react-redux';
-import { fetchCategories,selectAllCategories, activeCategoryChanged} from '../../slices/categoriesSlice';
+import { fetchCategories, activeCategoryChanged} from '../../slices/categoriesSlice';
 import setContent from "../../utils/setContent";
 import { NavLink } from "react-router-dom";
 
@@ -53,7 +53,7 @@ class NavBar extends Component {
 const mapStateToProps = (state) => {
     return {
         activeCategegory: state.categories.activeCategory,
-        categories: selectAllCategories(state),
+        categories: state.categories.categories,
         categoriesLoadingStatus: state.categories.categoriesLoadingStatus,
     }
 }

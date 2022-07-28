@@ -1,11 +1,7 @@
-import { createSlice, createAsyncThunk, createEntityAdapter, createAction } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 
-import {fetchProductsByCategory, fetchProductById} from '../services';
+import {getProductsByCategoryQuery, getProductById} from "../services/queries/productsQueries";
 
-import getProductsQueries from "../services/queries/productsQueries";
-
-
-const {getProductsByCategoryQuery} = getProductsQueries()
 
 const productsAdapter = createEntityAdapter();
 
@@ -18,18 +14,16 @@ const initialState = productsAdapter.getInitialState({
 export const fetchProducts = (categoryName) => {
     return {
         type: 'products/fetchProducts',
-        payload: getProductsByCategoryQuery([categoryName]),
+        payload: getProductsByCategoryQuery(categoryName),
     }
 }
 
-export const fetchProduct = createAsyncThunk(
-    'products/fetchProduct',
-    async (id) => {
-        return await fetchProductById(id);
+export const fetchProduct = (id) => {
+    return {
+        type: 'products/fetchProduct',
+        payload: getProductById(id),
     }
-)
-
-
+}
 
 const productSlice = createSlice({
     name: 'products',
@@ -41,14 +35,16 @@ const productSlice = createSlice({
             })
             state.activeProduct.attributes[attributeIndex].selectedItem = action.payload.selectedItem
         },
-        FetchProducts: (state, action) => {
+        FetchProducts: (state) => {
             state.productsLoadingStatus = 'loading'
         }
 
     },
     extraReducers: (builder) => {
         builder
-            .addCase('products/fetchProducts/pending', state => {state.productsLoadingStatus = 'loading'})
+            .addCase('products/fetchProducts/pending', state => {
+                state.productsLoadingStatus = 'loading'
+            })
             .addCase('products/fetchProducts/fulfilled', (state, action) => {
                 state.productsLoadingStatus = 'confirmed';
                 productsAdapter.setAll(state, action.payload.category)
@@ -57,13 +53,13 @@ const productSlice = createSlice({
                 console.error(action)
                 state.productsLoadingStatus = 'error';
             })
-            .addCase(fetchProduct.pending, state => {state.productLoadingStatus = 'loading'})
-            .addCase(fetchProduct.fulfilled, (state, action) => {
+            .addCase('products/fetchProduct/pending', state => {state.productLoadingStatus = 'loading'})
+            .addCase('products/fetchProduct/fulfilled', (state, action) => {
                 state.productLoadingStatus = 'confirmed';
                 state.activeProduct = action.payload.product;
             })
-            .addCase(fetchProduct.rejected, (state, action) => {
-                console.log(action)
+            .addCase('products/fetchProduct/rejected', (state, action) => {
+                console.error(action)
                 state.productLoadingStatus = 'error';
             })
             .addDefaultCase(() => {})

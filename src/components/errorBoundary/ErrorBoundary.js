@@ -9,13 +9,14 @@ class ErrorBoundery extends Component {
     }
 
     componentDidCatch(error, errorInfo) {
-        console.log(error, errorInfo)
+        console.error(error, errorInfo)
     }
 
     render() {
         if (this.state.error) {
             return <ErrorMessage/>
         }
+
         return this.props.children;
     }
 }

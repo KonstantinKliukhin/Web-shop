@@ -1,4 +1,7 @@
-import { Component } from 'react'
+import { Component } from 'react';
+
+import { arrayOf, bool, string, func, number } from 'prop-types';
+import { cartProductType, priceType } from '../../types/productTypes';
 
 import { Link } from 'react-router-dom';
 
@@ -11,11 +14,13 @@ import {
     cartProductCountIncreased, 
     cartProductCountDecreased 
 } from '../../slices/cartSlice';
+
 import {productsWithCorrectPriceSelector, toCorrectPriceSelector} from '../../selectors/productWithCorrectPrice';
 
 import CartList from '../cartList/CartList';
 
 import './cart.scss';
+
 
 class Cart extends Component {
 
@@ -52,13 +57,14 @@ class Cart extends Component {
                     cartProductsIds={cartProductsIds}
                     isItemSlider={!mini}
                     onIncreaseCartProductCount={cartProductCountIncreased}
-                    onDecreaseCartProductCount={cartProductCountDecreased}/>
+                    onDecreaseCartProductCount={cartProductCountDecreased}
+                />
                 <div className={`${mainClass}__count`}>
                     {mini || 
                         <>
                             <p className="cart__count__tax">Tax 21%: </p>
                             <p className="cart__count__number">
-                                {`${cartTaxPrice?.currency?.symbol}${cartTaxPrice.amount}`}
+                                {`${cartTaxPrice?.currency?.symbol}${cartTaxPrice?.amount}`}
                             </p>
                             <p className="cart__count_quantity">Quantity: </p>
                             <p className="cart__count__number">{cartQuantity}</p>
@@ -74,7 +80,8 @@ class Cart extends Component {
                         <Link 
                             onClick={onToggleMenu} 
                             to='/cart' 
-                            className="minicart__btn btn-white">
+                            className="minicart__btn btn-white"
+                        >
                                 View bag
                         </Link>
                     }
@@ -130,4 +137,22 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {cartProductCountIncreased, cartProductCountDecreased})(Cart);
+Cart.propTypes = {
+    mini: bool,
+    onToggleMenu: func,
+    cartProductCountDecreased: func.isRequired,
+    cartProductCountIncreased: func.isRequired,
+    cartQuantity: number,
+    cartTaxPrice: priceType,
+    cartTotalPrice: priceType,
+    cartProductsIds: arrayOf(string),
+    cartProductsList: arrayOf(cartProductType)
+}
+
+export default connect(
+    mapStateToProps, 
+    {
+        cartProductCountIncreased, 
+        cartProductCountDecreased
+    }
+)(Cart);

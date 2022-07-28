@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
-import emptyCartWhite from '../../resources/img/emptyCartWhite.svg';
+import emptyCartWhite from '../../assets/images/emptyCartWhite.svg';
 
-import noImageAvailable from '../../resources/img/noImageAvailable.jpg';
+import noImageAvailable from '../../assets/images/noImageAvailable.jpg';
 
 
 import './productCard.scss';

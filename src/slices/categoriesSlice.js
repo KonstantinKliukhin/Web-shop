@@ -1,21 +1,20 @@
-import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import {fetchCategoriesNames} from '../services'
+import { getCategoriesNamesQuery } from "../services/queries/categoriesQueries";
 
 
-const categoriesAdapter = createEntityAdapter();
-
-const initialState = categoriesAdapter.getInitialState({
+const initialState = {
     activeCategory: '',
     categoriesLoadingStatus: 'idle',
-})
+    categories: []
+}
 
-export const fetchCategories = createAsyncThunk(
-    'categories/fetchCategories',
-    async () => {
-        return await fetchCategoriesNames();
+export const fetchCategories = () => {
+    return {
+        type: 'categories/fetchCategories',
+        payload: getCategoriesNamesQuery(),
     }
-)
+}
 
 const categoriesSlice = createSlice({
     name: 'categories',
@@ -27,13 +26,13 @@ const categoriesSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchCategories.pending, state => {state.categoriesLoadingStatus = 'loading'})
-            .addCase(fetchCategories.fulfilled, (state, action) => {
+            .addCase('categories/fetchCategories/pending', state => {state.categoriesLoadingStatus = 'loading'})
+            .addCase('categories/fetchCategories/fulfilled', (state, action) => {
                 state.categoriesLoadingStatus = 'confirmed';
-                categoriesAdapter.setAll(state, action.payload.categories)
+                state.categories = action.payload.categories;
             })
-            .addCase(fetchCategories.rejected, (state, action) => {
-                console.log(action)
+            .addCase('categories/fetchCategories/rejected', (state, action) => {
+                console.error(action)
                 state.categoriesLoadingStatus = 'error';
             })
             .addDefaultCase(() => {})
@@ -42,8 +41,6 @@ const categoriesSlice = createSlice({
 
 
 const {actions, reducer} = categoriesSlice;
-
-export const {selectAll : selectAllCategories} = categoriesAdapter.getSelectors(state => state.categories);
 
 export const {
     activeCategoryChanged,

@@ -1,9 +1,12 @@
 import { Component } from "react";
 
+import { bool, func } from 'prop-types';
+import { cartProductType } from '../../types/productTypes';
+
 import ItemDescription from "../itemDescription/itemDescription";
 import Slider from "../slider/Slider";
 
-import noImageAvailable from '../../resources/img/noImageAvailable.jpg';
+import noImageAvailable from '../../assets/images/noImageAvailable.jpg';
 
 import './cartItem.scss';
 
@@ -22,7 +25,14 @@ class CartItem extends Component {
             onIncreaseCartProductCount, 
         } = this.props;
 
-        const {name, brand, attributes, price, gallery, count,} = cartProduct;
+        const { 
+            name, 
+            brand, 
+            attributes,
+            price, 
+            gallery, 
+            count 
+        } = cartProduct;
 
         let imagesView;
 
@@ -34,7 +44,8 @@ class CartItem extends Component {
                                     key={i}
                                     src={image} 
                                     alt={name} 
-                                    className='cart__item__img'/>
+                                    className='cart__item__img'
+                                />
                     })}
                 </Slider>
             ) 
@@ -55,17 +66,22 @@ class CartItem extends Component {
                     brand={brand} 
                     attributes={attributes} 
                     attributesSelectionIsDisabled
-                    price={price} />
+                    price={price} 
+                />
                 <div className="cart__item__counter">
                     <button 
                         onClick={() => onIncreaseCartProductCount(cartProduct)}
-                        className="cart__item__counter__btn">
+                        className="cart__item__counter__btn"
+                    >
                         +
                     </button>
-                    <p className="cart__item__counter__count">{count}</p>
+                    <p className="cart__item__counter__count">
+                        {count}
+                    </p>
                     <button
                         onClick={(e) => this.onDecreaseCartProductCount(e, cartProduct)} 
-                        className="cart__item__counter__btn">
+                        className="cart__item__counter__btn"
+                    >
                         -
                     </button>
                 </div>
@@ -75,5 +91,11 @@ class CartItem extends Component {
     }
 }
 
+CartItem.propTypes = {
+    isSlider: bool,
+    onIncreaseCartProductCount: func.isRequired,
+    onDecreaseCartProductCount: func.isRequired,
+    cartProduct: cartProductType,
+}
 
 export default CartItem;

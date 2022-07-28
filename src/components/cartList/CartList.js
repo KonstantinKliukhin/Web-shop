@@ -1,4 +1,8 @@
 import { Component } from "react";
+
+import { arrayOf, bool, string, func } from 'prop-types';
+import { cartProductType } from '../../types/productTypes';
+
 import CartItem from "../cartItem/CartItem";
 
 import './cartList.scss';
@@ -26,7 +30,8 @@ class CartList extends Component {
                                 cartProduct={cartProduct}
                                 onIncreaseCartProductCount={onIncreaseCartProductCount}
                                 onDecreaseCartProductCount={onDecreaseCartProductCount}
-                            />)
+                            />
+                        )
                     })
                 }
             </ul>
@@ -34,6 +39,14 @@ class CartList extends Component {
     }
 }
 
+CartList.propTypes = {
+    type: string,
+    isItemSlider: bool,
+    cartProductsIds: arrayOf(string),
+    onIncreaseCartProductCount: func.isRequired,
+    onDecreaseCartProductCount: func.isRequired,
+    cartProductsList: arrayOf(cartProductType).isRequired,
+}
 
 export default CartList;
 

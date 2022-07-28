@@ -1,18 +1,24 @@
 import React from 'react'
 
+import { string, func } from 'prop-types';
+import { categoriesType } from '../../types/categoriesTypes';
+
 import Page404 from '../../pages/404/404';
 
 import setContent from '../../utils/setContent';
 
 import { connect } from 'react-redux';
-import { activeCategoryChanged, selectAllCategories } from '../../slices/categoriesSlice';
+import { activeCategoryChanged } from '../../slices/categoriesSlice';
+
 import { Redirect } from 'react-router-dom';
+
 
 const withSetCorrectCategory = (Component) => {
     class Wrapper extends React.Component {
 
         constructor(props) {
             super(props)
+
             this.state = {
                 activeContent: null,
             }
@@ -74,18 +80,26 @@ const withSetCorrectCategory = (Component) => {
         }
 
         render() {
-            const {activeContent} = this.state;
             return (
                 <>
-                    {activeContent}
+                    {this.state.activeContent}
                 </>
             )
         }
-      }
+    }
+
+    Wrapper.propTypes = {
+        activeCategory: string,
+        categories: categoriesType,
+        categoryPath: string,
+        activeCategoryChanged: func.isRequired,
+        categoriesLoadingStatus: string.isRequired,
+        
+    }
 
     const mapStateToProps = (state) => ({
         activeCategory: state.categories.activeCategory,
-        categories: selectAllCategories(state),
+        categories: state.categories.categories,
         categoriesLoadingStatus: state.categories.categoriesLoadingStatus,
     })
 
