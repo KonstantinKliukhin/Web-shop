@@ -27,8 +27,8 @@ const changeCartPrices = (state, product, difference) => {
                 return  totalPrice.currency.id === price.currency.id;
              })
 
-            const currentTaxIndex = state.cartTaxPrice.findIndex((totalPrice) => {
-                return  totalPrice.currency.id === price.currency.id;
+            const currentTaxIndex = state.cartTaxPrice.findIndex((taxPrice) => {
+                return  taxPrice.currency.id === price.currency.id;
              })
 
             const oldTotalPrice = state.cartTotalPrice[currentTotalIndex].amount;
@@ -62,17 +62,15 @@ const changeProductCount = (state, id, adapter, difference) => {
 }
 
 const validateToCartProduct = (product) => {
-    if (!product?.id || 
-        !product?.name || 
-        !product?.brand || 
-        !product?.prices || 
-        !product?.inStock ||
-        !product?.prices?.some(
-            price => (price?.currency?.id != null || typeof price?.amount === 'number')
+    if (product?.id || 
+        product?.name || 
+        product?.brand || 
+        product?.prices || 
+        product?.inStock ||
+        product?.prices?.every(
+            price => (price?.currency?.id != null && typeof price?.amount === 'number')
         )
     ) {
-        console.error(`Attempt to add an invalid product to the cart`, product)
-    } else {
         return ({
             id: product.id,
             name: product.name,
@@ -81,6 +79,8 @@ const validateToCartProduct = (product) => {
             gallery: product.gallery,
             attributes: product.attributes,
         })
+    } else {
+        console.error(`Attempt to add an invalid product to the cart`, product)
     }
 }
 
@@ -91,7 +91,6 @@ const categoriesSlice = createSlice({
     initialState,
     reducers: {
         cartProductAdded: (state, action) => {
-
             const product = validateToCartProduct(action.payload)
 
             const cartProductId = getCartIdbyProductId(product)
@@ -110,12 +109,14 @@ const categoriesSlice = createSlice({
             const cartProductId = getCartIdbyProductId(action.payload)
             
             changeCartPrices(state, action.payload, 1)
+
             changeProductCount(state, cartProductId, cartAdapter, 1)
         },
         cartProductCountDecreased: (state, action) => {
             const cartProductId = getCartIdbyProductId(action.payload)
             
             changeCartPrices(state, action.payload, -1)
+            
             changeProductCount(state, cartProductId, cartAdapter, -1)
         }
             

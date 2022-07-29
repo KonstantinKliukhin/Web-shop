@@ -20,7 +20,7 @@ class CartList extends Component {
         } = this.props;
         
         return (
-            <ul className={`cart__list ${type}`}>
+            <ul aria-live='polite' className={`cart__list ${type}`}>
                 {
                     cartProductsList.map((cartProduct, i) => {
                         return (

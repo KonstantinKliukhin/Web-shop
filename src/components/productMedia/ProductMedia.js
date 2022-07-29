@@ -1,5 +1,5 @@
 import { Component, Children, cloneElement } from "react";
-import PropTypes from 'prop-types';
+import {number, shape, objectOf, string} from 'prop-types';
 
 import arrow from '../../assets/images/arrow-down.svg';
 import noImageAvailable from '../../assets/images/noImageAvailable.jpg';
@@ -25,7 +25,14 @@ class ProductMedia extends Component {
 
     componentDidMount() {
 
-        const {children, smallImgHeight, bigImgHeight, smallImgWidth, gap, styles} = this.props;
+        const {
+            children, 
+            smallImgHeight, 
+            bigImgHeight, 
+            smallImgWidth, 
+            gap, 
+            styles
+        } = this.props;
 
         const {smallImg} = styles;
 
@@ -39,6 +46,7 @@ class ProductMedia extends Component {
                     cursor: 'pointer',
                     ...smallImg,
                 },
+                onClick: this.handleSlideClick,
                 className: 'product-media__slider__slide',
                 'data-slide-count': i 
             })
@@ -63,6 +71,7 @@ class ProductMedia extends Component {
 
     handleUpArrowClick = () => {
         const {smallImgHeight, gap} = this.props;
+
         this.setState(({offset}) => {
             const newOffset = offset + smallImgHeight + gap;
 
@@ -98,7 +107,14 @@ class ProductMedia extends Component {
     }
     
     render() {
-        const {bigImgWidth, bigImgHeight, children, gap, styles} = this.props;
+        const {
+            bigImgWidth, 
+            bigImgHeight, 
+            children, 
+            gap, 
+            styles
+        } = this.props;
+
         const {
             sliderHeight, 
             offset, 
@@ -108,7 +124,15 @@ class ProductMedia extends Component {
             pages,
         } = this.state;
 
-        const {arrowUp, arrowDown, media, slider, window, container, bigImg} = styles;
+        const {
+            arrowUp, 
+            arrowDown, 
+            media, 
+            slider, 
+            window, 
+            container, 
+            bigImg
+        } = styles;
 
         const upperArrow = upperArrowVisible && 
             (<img 
@@ -132,13 +156,16 @@ class ProductMedia extends Component {
             <div className="product-media" style={media}>
                 <div 
                     style={{maxHeight: `${sliderHeight}px`, ...slider}} 
-                    className="product-media__slider">
-
+                    className="product-media__slider"
+                >
                     <div className="product-media__slider__window" style={window}>
                         <div 
-                            onClick={this.handleSlideClick}
-                            style={{transform: `translateY(${offset}px)`, rowGap: `${gap}px`, ...container}} 
-                            className="product-media__slider__slides-container">
+                            style={{
+                                transform: `translateY(${offset}px)`, 
+                                rowGap: `${gap}px`, ...container
+                            }} 
+                            className="product-media__slider__slides-container"
+                        >
                             {pages}
                         </div>
                     </div>
@@ -147,7 +174,8 @@ class ProductMedia extends Component {
                 </div>
                 <div 
                     style={{width: bigImgWidth, height: bigImgHeight, ...bigImg}} 
-                    className="product-media__current-img">    
+                    className="product-media__current-img"
+                >    
                     {children[currentPage]}
                 </div>
             </div>
@@ -161,20 +189,19 @@ ProductMedia.defaultProps = {
 }
 
 ProductMedia.propTypes = {
-    smallImgHeight: PropTypes.number.isRequired,
-    smallImgWidth: PropTypes.number.isRequired,
-    bigImgHeight: PropTypes.number.isRequired,
-    bigImgWidth: PropTypes.number.isRequired,
-    gap: PropTypes.number.isRequired,
-
-    styles: PropTypes.shape({
-        arrowUp: PropTypes.objectOf(PropTypes.string),
-        arrowDown:PropTypes.objectOf(PropTypes.string),
-        media: PropTypes.objectOf(PropTypes.string),
-        slider: PropTypes.objectOf(PropTypes.string),
-        window: PropTypes.objectOf(PropTypes.string),
-        container: PropTypes.objectOf(PropTypes.string),
-        bigImg: PropTypes.objectOf(PropTypes.string),
+    smallImgHeight: number.isRequired,
+    smallImgWidth: number.isRequired,
+    bigImgHeight: number.isRequired,
+    bigImgWidth: number.isRequired,
+    gap: number.isRequired,
+    styles: shape({
+        arrowUp: objectOf(string),
+        arrowDown:objectOf(string),
+        media: objectOf(string),
+        slider: objectOf(string),
+        window: objectOf(string),
+        container: objectOf(string),
+        bigImg: objectOf(string),
     }),
 }
 

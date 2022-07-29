@@ -2,6 +2,8 @@ import { Component } from 'react'
 
 import ErrorMessage from "../errorMessage/ErrorMessage";
 
+import './errorBoundary.scss';
+
 
 class ErrorBoundery extends Component {
     state = {
@@ -10,11 +12,18 @@ class ErrorBoundery extends Component {
 
     componentDidCatch(error, errorInfo) {
         console.error(error, errorInfo)
+
+        this.setState({error: true});
     }
 
     render() {
         if (this.state.error) {
-            return <ErrorMessage/>
+            return (
+                <div className='error-block'>
+                    <ErrorMessage/>
+                </div>
+            )
+            
         }
 
         return this.props.children;

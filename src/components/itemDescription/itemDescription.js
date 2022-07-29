@@ -1,5 +1,8 @@
 import {Component} from 'react';
 
+import { bool, func, string } from 'prop-types';
+import { priceType, attributesType } from '../../types/productTypes';
+
 import ItemAtribute from '../itemAtribute/ItemAtribute';
 
 import './itemDescription.scss';
@@ -48,7 +51,7 @@ class ItemDescription extends Component {
                     </p>
                     <p className="item__description__price">
                         {price ? 
-                            `${price?.currency?.symbol}${price?.amount}` : 
+                            `${price.currency?.symbol}${price.amount}` : 
                             'No information about price'}
                     </p>
                 </div>
@@ -56,6 +59,17 @@ class ItemDescription extends Component {
         </div>
         )
     }
+}
+
+ItemDescription.propTypes = {
+    onSelectAttribute: func,
+    priceDown: bool,
+    name: string.isRequired,
+    brand: string.isRequired,
+    disabled: bool,
+    seletionIsDisabled: bool,
+    price: priceType.isRequired,
+    attributes: attributesType,
 }
 
 export default ItemDescription;

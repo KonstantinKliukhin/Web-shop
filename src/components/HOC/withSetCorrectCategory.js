@@ -1,16 +1,16 @@
 import React from 'react'
 
+import { Redirect } from 'react-router-dom';
+
 import { string, func } from 'prop-types';
 import { categoriesType } from '../../types/categoriesTypes';
-
-import Page404 from '../../pages/404/404';
 
 import setContent from '../../utils/setContent';
 
 import { connect } from 'react-redux';
 import { activeCategoryChanged } from '../../slices/categoriesSlice';
 
-import { Redirect } from 'react-router-dom';
+import Page404 from '../../pages/404/404';
 
 
 const withSetCorrectCategory = (Component) => {
@@ -61,7 +61,10 @@ const withSetCorrectCategory = (Component) => {
             })
             
             if (activeCategory === categoryPath) {
-                return <Component {...props}/>
+                return <Component 
+                            activeCategory={activeCategory}
+                            {...props}
+                        />
             } else if (!categoryPath) {
                 return setContent(
                     [categoriesLoadingStatus], 
@@ -75,7 +78,10 @@ const withSetCorrectCategory = (Component) => {
             } else if (categories.length && currentCategoryIndex >= 0) {
                 activeCategoryChanged(categoryPath);
                 
-                return <Component {...props}/>
+                return <Component 
+                            activeCategory={categoryPath} 
+                            {...props}
+                        />
             }
         }
 

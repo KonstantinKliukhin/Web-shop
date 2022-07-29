@@ -1,6 +1,8 @@
-import {configureStore} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 
 import { loadState } from '../services/browserStorage';
+import { saveState } from '../services/browserStorage';
+import debounce from '../utils/debounce';
 
 import { fetchMiddleware } from '../middleware/getApi';
 
@@ -17,5 +19,11 @@ const store = configureStore({
     devTools: process.env.NODE_ENV !== 'production',
     preloadedState: loadState(),
 })
+
+store.subscribe(
+    debounce(() => {
+        saveState(store.getState())
+    }, 800)
+  )
 
 export default store;

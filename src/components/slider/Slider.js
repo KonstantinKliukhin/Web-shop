@@ -1,6 +1,6 @@
 import { Component, Children, cloneElement } from "react";
 
-import PropTypes from 'prop-types';
+import { objectOf, shape, number, string } from 'prop-types';
 
 import arrow from '../../assets/images/arrowDownWhite.svg';
 import noImageAvailable from '../../assets/images/noImageAvailable.jpg';
@@ -47,6 +47,7 @@ class Slider extends Component {
     handleRightArrowClick = () => {
         this.setState(({offset, pages}) => {
             const maxOffset = -(pages.length - 1) * this.props.width;
+
             const newOffset = offset - this.props.width
 
             return {
@@ -75,33 +76,41 @@ class Slider extends Component {
         return (
             <div 
                 style={{height: `${height}px`, width: `${width}px`, ...slider}} 
-                className={`slider ${id}`}>
+                className={`slider ${id}`}
+            >
                 <div style={window} className={`slider__window ${id}`}>
                     <div 
                         style={{transform: `translate(${offset}px)`, ...container}} 
-                        className={`slider__slides-container ${id}`}>
+                        className={`slider__slides-container ${id}`}
+                    >
                         {pages}
                     </div>
                 </div>
                 <div 
                     onClick={this.handleLeftArrowClick} 
                     className={`slider-arrow slider__arrow-left ${id}`}
-                    style={arrowLeftWrapper}>
+                    style={arrowLeftWrapper}
+                >
                     <img 
+                        role='button'
                         src={arrow} 
                         alt="arrow to previous slide" 
                         className={`slider-arrow__img ${id}`}
-                        style={arrowLeft} />
+                        style={arrowLeft} 
+                    />
                 </div>
                 <div 
                     onClick={this.handleRightArrowClick} 
                     className={`slider-arrow slider__arrow-right ${id}`}
-                    style={arrowRightWrapper}>
+                    style={arrowRightWrapper}
+                >
                     <img 
+                        role='button'
                         src={arrow} 
                         alt="arrow to next slide" 
                         className={`slider-arrow__img ${id}`}
-                        style={arrowRight}/>
+                        style={arrowRight}
+                    />
                 </div>
             </div>
         )
@@ -117,17 +126,17 @@ Slider.defaultProps = {
 }
 
 Slider.propTypes = {
-    id: PropTypes.string,
-    height: PropTypes.number.isRequired,
-    width: PropTypes.number.isRequired,
-    styles: PropTypes.shape({
-        slider: PropTypes.objectOf(PropTypes.string),
-        window:PropTypes.objectOf(PropTypes.string),
-        container: PropTypes.objectOf(PropTypes.string),
-        arrowLeftWrapper: PropTypes.objectOf(PropTypes.string),
-        arrowRightWrapper: PropTypes.objectOf(PropTypes.string),
-        arrowLeft: PropTypes.objectOf(PropTypes.string),
-        arrowRight: PropTypes.objectOf(PropTypes.string),
+    id: string,
+    height: number.isRequired,
+    width: number.isRequired,
+    styles: shape({
+        slider: objectOf(string),
+        window:objectOf(string),
+        container: objectOf(string),
+        arrowLeftWrapper: objectOf(string),
+        arrowRightWrapper: objectOf(string),
+        arrowLeft: objectOf(string),
+        arrowRight: objectOf(string),
       }),
 }
 

@@ -1,4 +1,4 @@
-export const transformToDescription = (clazz) => (node, children) => {
+const transformToDescription = (clazz) => (node, children) => {
 
     if ((/H[1-7]/).test(node.tagName)) {
         return (
@@ -9,3 +9,5 @@ export const transformToDescription = (clazz) => (node, children) => {
         return <p className={`${clazz}__text`}>{children}</p>
     }
 }
+
+export default transformToDescription;

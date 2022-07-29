@@ -1,8 +1,15 @@
 import { Component } from 'react';
 
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import { 
+    shape, 
+    objectOf, 
+    bool, 
+    func, 
+    string, 
+} from 'prop-types';
+import { attributeType } from '../../types/productTypes';
 
+import classNames from 'classnames';
 
 import './itemAtribute.scss';
 
@@ -35,7 +42,9 @@ class ItemAtribute extends Component {
             return (
                 items.map((item) => {
                     const selected = item.id === selectedItemId;
+
                     const isColor = type === 'swatch';
+
                     let onSelect;
 
                     if (onSelectAttribute) {
@@ -45,7 +54,7 @@ class ItemAtribute extends Component {
                     const itemClass = classNames({
                         'attribute-block__item': !isColor,
                         'attribute-block__item-color': isColor,
-                        'attribute-block__item-color-white': item.displayValue === 'White',
+                        'attribute-block__item-color-white': item?.displayValue === 'White',
                         'active': selected && !disabled,
                         'selection-disabled': seletionIsDisabled,
                         'disabled': disabled,
@@ -72,8 +81,16 @@ class ItemAtribute extends Component {
                         <li 
                             key={item.id} 
                             className={itemClass}
+                            role='radio'
+                            aria-checked={selected}
                             onClick={onSelect}
+                            onKeyDown={(e) => {
+                                if (e.code === 'Enter' || e.code === 'Space') {
+                                    onSelect(e)
+                                }
+                            }}
                             {...calculatedAttrs()}
+                            tabIndex={seletionIsDisabled ? '' : 0}
                         >
                             {isColor ? null: item.value}
                         </li>
@@ -91,7 +108,11 @@ class ItemAtribute extends Component {
                 <p style={title} className="attribute-block__title">
                     {attribute?.name}:
                 </p>
-                <ul style={items} className="attribute-block__list">
+                <ul 
+                    role='radiogroup' 
+                    style={items} 
+                    className="attribute-block__list"
+                >
                     {this.ItemList()}
                 </ul>
             </div>
@@ -105,41 +126,17 @@ ItemAtribute.defaultProps = {
 }
 
 ItemAtribute.propTypes = {
-    style: PropTypes.shape({
-        block: PropTypes.objectOf(PropTypes.string),
-        title:PropTypes.objectOf(PropTypes.string),
-        items: PropTypes.objectOf(PropTypes.string),
-        item: PropTypes.objectOf(PropTypes.string),
-        selectedItem: PropTypes.objectOf(PropTypes.string),
-      }),
-
-    onSelectAttribute: PropTypes.func,
-
-    attribute: PropTypes.shape({
-       items: PropTypes.arrayOf(PropTypes.shape({
-            value: PropTypes.oneOfType([
-                PropTypes.string,
-                PropTypes.number,
-            ]).isRequired,
-            displayValue: PropTypes.oneOfType([
-                PropTypes.string,
-                PropTypes.number,
-            ]).isRequired,
-            id: PropTypes.oneOfType([
-                PropTypes.string,
-                PropTypes.number,
-            ]).isRequired,
-        })).isRequired,
-
-        id: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-        ]).isRequired,
-
-        name: PropTypes.string,
+    style: shape({
+        block: objectOf(string),
+        title:objectOf(string),
+        items: objectOf(string),
+        item: objectOf(string),
+        selectedItem: objectOf(string),
     }),
-    disabled: PropTypes.bool,
-    selectionIsDisabled: PropTypes.bool,
+    onSelectAttribute: func,
+    disabled: bool,
+    selectionIsDisabled: bool,
+    attribute: attributeType,
 }
 
 export default ItemAtribute;

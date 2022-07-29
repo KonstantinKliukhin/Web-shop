@@ -34,6 +34,11 @@ class DropDownMenu extends Component {
       
         if (isOverlay) {
             document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.top = '0';
+            document.body.style.left = '0'
+            document.body.style.width = '100%';
+
             overlayRoot.appendChild(this.overlayWrapper);
         }
     }
@@ -43,16 +48,27 @@ class DropDownMenu extends Component {
         const {isOverlay} = this.props;
 
         if (isOverlay && !isMenuOpen) {
-            document.body.style.overflow = 'unset';
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = ''
+            document.body.style.width = '';
         } else if (isOverlay) {
             document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.top = '0';
+            document.body.style.left = '0'
+            document.body.style.width = '100%';
         }
 
         setTimeout(() => {
             if (isMenuOpen) {
                 document.addEventListener('click', this.handleClickOutside);
+                document.addEventListener('keydown', this.onEsc)
             } else {
                 document.removeEventListener('click', this.handleClickOutside)
+                document.removeEventListener('keydown', this.onEsc)
+
             }
         }, 0)
     }
@@ -64,8 +80,9 @@ class DropDownMenu extends Component {
             document.body.style.overflow = 'unset';
             overlayRoot.removeChild(this.overlayWrapper);
         }
-
         document.removeEventListener('click', this.handleClickOutside)
+
+        document.removeEventListener('keydown', this.onEsc)
     }
 
     setWrapperRef = (node) => {
@@ -81,13 +98,19 @@ class DropDownMenu extends Component {
     close = () => {
         this.setState({
             isMenuOpen: false,
-        })
+        });
+    }
+
+    onEsc = (e) => {
+        if (e.key === 'Escape') {
+            this.close();
+        }
     }
 
     onToggleMenu = () => {
         this.setState(({isMenuOpen}) => ({
             isMenuOpen: !isMenuOpen,
-        }))
+        }));
     }
 
 
@@ -110,9 +133,11 @@ class DropDownMenu extends Component {
         return (
             <div className={`dropdown-menu ${id}`} style={menu}>
                 <button
-                  onClick={this.onToggleMenu}
-                  className={`dropdown-menu__header ${id}`}
-                  style={header}
+                    aria-controls={id}
+                    aria-expanded={isMenuOpen}
+                    onClick={this.onToggleMenu}
+                    className={`dropdown-menu__header ${id}`}
+                    style={header}
                 >
                     <div 
                         className={`dropdown-menu__title ${id}`} 
@@ -129,6 +154,7 @@ class DropDownMenu extends Component {
                 }
                 {isMenuOpen && 
                     <div 
+                        id={id}
                         style={list} 
                         ref={this.setWrapperRef} 
                         className={`dropdown-menu__list ${id}`}

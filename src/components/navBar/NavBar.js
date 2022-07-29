@@ -1,19 +1,26 @@
 import { Component } from "react";
-import NavActions from "../navActions/NavActions";
-import './navBar.scss'
-import brand from '../../assets/images/brand.svg'
+
+import { func, string } from "prop-types";
+import { categoriesType } from "../../types/categoriesTypes";
+
+import { NavLink } from "react-router-dom";
+
+import setContent from "../../utils/setContent";
+
 import {connect} from 'react-redux';
 import { fetchCategories, activeCategoryChanged} from '../../slices/categoriesSlice';
-import setContent from "../../utils/setContent";
-import { NavLink } from "react-router-dom";
+
+import NavActions from "../navActions/NavActions";
+
+import brand from '../../assets/images/brand.svg'
+
+import './navBar.scss'
 
 
 class NavBar extends Component {
     componentDidMount() {
-        const {fetchCategories} = this.props;
-        fetchCategories();
+        this.props.fetchCategories();
     }
-
 
     getCategoryList = () => {
         const {categoriesLoadingStatus, categories, activeCategegory} = this.props;
@@ -21,33 +28,43 @@ class NavBar extends Component {
         const categoryList = (categories) => {
             return categories.map(category => {
                 return (
-                    <li key={category.id} >
+                    <li key={category.id} role='menuitem'>
                         <NavLink 
                             className={(isActive) => 
                                 (`nav__categories__item ${isActive || 
                                     activeCategegory === category.name ? 'active': ''}`)} 
-                            to={`/${category.name}`}>
-                                {category.name}
+                            to={`/${category.name}`}
+                        >
+                            {category.name}
                         </NavLink>
                     </li>
                 )
             })
         } 
-
         return setContent([categoriesLoadingStatus], categoryList, categories) 
     }
 
     render() {
         return (
-            <nav className="flex-sb-center container nav">
-                <ul className="nav__categories">
+            <nav 
+                className="flex-sb-center container nav" 
+                role='navigation'
+            >
+                <ul className="nav__categories" role='menubar'>
                     {this.getCategoryList()}
                 </ul>
-                <img src={brand} alt="" className="nav__brand" />
+                <img src={brand} alt="brand icon" className="nav__brand" />
                 <NavActions/>
             </nav>
         )
-    }
+    } 
+}
+
+NavBar.propTypes = {
+    fetchCategories: func,
+    categoriesLoadingStatus: string.isRequired,
+    activeCategory: string,
+    categories: categoriesType,
 }
 
 const mapStateToProps = (state) => {
@@ -58,4 +75,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {fetchCategories, activeCategoryChanged})(NavBar);
+export default connect(
+    mapStateToProps, 
+    {
+        fetchCategories, 
+        activeCategoryChanged
+    }
+)(NavBar);

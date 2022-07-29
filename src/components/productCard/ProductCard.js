@@ -1,9 +1,12 @@
 import { Component } from 'react';
+
+import { bool, func, string } from 'prop-types';
+import { priceType } from '../../types/productTypes';
+
 import { Link } from 'react-router-dom';
+
 import emptyCartWhite from '../../assets/images/emptyCartWhite.svg';
-
 import noImageAvailable from '../../assets/images/noImageAvailable.jpg';
-
 
 import './productCard.scss';
 
@@ -11,30 +14,68 @@ import './productCard.scss';
 class ProductCard extends Component {
 
   render() {
-    const {name, brand, inStock, gallery, price, onCartBtnClick, cardPath} = this.props;
+    const {
+        name, 
+        brand, 
+        inStock, 
+        gallery, 
+        price, 
+        onCartBtnClick, 
+        cardPath
+    } = this.props;
+    
     return (
-          <div className={`products__card ${inStock ? '': 'out-of-stock'}`}>
-              <div className="products__card__img-wrapper">
-                <Link className='block' to={cardPath}>
-                  <img 
-                    src={gallery || noImageAvailable} 
-                    alt="product" 
-                    className="products__card__img"/>
-                </Link>
+        <li className={`products__card ${inStock ? '': 'out-of-stock'}`}>
+            <Link
+                className='block'
+                to={cardPath}
+            >
+                <div className="products__card__img-wrapper">
+                        <img
+                            src={gallery || noImageAvailable}
+                            alt={name}
+                            className="products__card__img"
+                        />
                     {inStock && price &&
-                      <div 
-                        className="products__card__cart-btn"
-                        onClick={onCartBtnClick}>
-                        <img src={emptyCartWhite} alt="add to cart" className="products__card__cart-btn__img"/>
-                      </div>}
-              </div>
-              <Link className='block' to={cardPath}>
-                <p className="products__card__title">{brand} {name}</p>
-              </Link>
-              <p className="products__card__price">{price?.currency?.symbol}{price?.amount}{price ? '' : 'No information about price'}</p>
-          </div>
+                        <div
+                            className="products__card__cart-btn"
+                            tabIndex={0}
+                            role='button'
+                            onClick={onCartBtnClick}
+                            onKeyDown={(e) => {
+                                if (e.code === 'Enter' || e.code === 'Space') {
+                                    onCartBtnClick(e)
+                                }
+                            }}
+                        >
+                            <img
+                                src={emptyCartWhite}
+                                alt="add to cart"
+                                className="products__card__cart-btn__img"
+                            />
+                      </div>
+                    }
+                </div>
+                    <p className="products__card__title">{brand} {name}</p>
+                <p className="products__card__price">
+                    {price ?
+                        `${price?.currency?.symbol}${price?.amount}` :
+                        'No information about price'}
+                </p>
+            </Link>
+        </li>
     )
   }
+}
+
+ProductCard.propTypes = {
+    name: string.isRequired,
+    brand: string.isRequired,
+    inStock: bool.isRequired,
+    gallery: string.isRequired,
+    onCartBtnClick: func,
+    cardPath: string.isRequired,
+    price: priceType,
 }
 
 export default ProductCard;

@@ -1,12 +1,10 @@
 import { Component } from "react";
 
-import {Interweave} from 'interweave';
-import {transformToDescription} from '../../utils/transformToDescriptionJSX';
 
-import ItemDescription from "../../components/itemDescription/itemDescription";
-import ProductMedia from "../../components/productMedia/ProductMedia";
-import Page404 from "../404/404";
-import Spinner from "../../components/spinner/Spinner";
+import { func, string } from "prop-types";
+import { productType } from "../../types/productTypes";
+
+import setContent from "../../utils/setContent";
 
 import { connect } from "react-redux";
 import { compose } from "@reduxjs/toolkit";
@@ -16,7 +14,10 @@ import { cartProductAdded } from "../../slices/cartSlice";
 
 import {productsWithCorrectPriceSelector} from "../../selectors/productWithCorrectPrice";
 
-import setContent from "../../utils/setContent";
+import Page404 from "../404/404";
+import Spinner from "../../components/spinner/Spinner";
+
+import SingleItemLayout from "./SingleItemLayout";
 
 import withSetCorrectCategory from "../../components/HOC/withSetCorrectCategory";
 
@@ -29,7 +30,7 @@ class SingleItemPage extends Component {
         fetchProduct(id);
     }
 
-    getSingleItemContent = () => {
+    render() {
         const { 
             product, 
             productLoadingStatus, 
@@ -38,70 +39,42 @@ class SingleItemPage extends Component {
             activeCategory,
         } = this.props;
 
-        const isActiveBtn = product?.inStock && product?.price; 
-
-        const singleItemContent = (product) => {
-
-            if (product?.category !== activeCategory && activeCategory !== 'all') {
-                return <Page404/>
-            }
-
-            return (
-                <section className=" container single-item">
-                    <ProductMedia
-                        smallImgWidth={80}
-                        smallImgHeight={80}
-                        bigImgWidth={610}
-                        bigImgHeight={511}
-                        gap={40}
-                    >
-                        {product?.gallery?.map((img, i) => (
-                            <img key={i} src={img} alt={product?.name}/>
-                        ))}
-                    </ProductMedia>
-                        <div className="single-item__specification">
-                            <ItemDescription 
-                                price={product?.price} 
-                                name={product?.name}
-                                brand={product?.brand}
-                                attributes={product?.attributes}
-                                priceDown={true}
-                                onSelectAtttribute={product?.inStock ? activeAtributeChanged : null}
-                                attributesIsDisabled={!product?.inStock}
-                            />
-                            <button 
-                                onClick={isActiveBtn ? () => cartProductAdded(product): null}
-                                className={`single-item__specification__btn ${isActiveBtn ? '':'disabled'}`}
-                            >
-                                {isActiveBtn ? 'ADD TO CART': 'Out of stock'}
-                            </button>
-                            <div className="single-item__specification__description">
-                                <Interweave 
-                                    content={product?.description} 
-                                    transform={
-                                        transformToDescription("single-item__specification__description")
-                                    } 
-                                    transformOnlyAllowList={false}
-                                    tagName={'div'}
-                                    allowList={['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'p', 'ul', 'li']}
-                                />
-                            </div>
-                        </div> 
-                </section>
-            )
+        if (
+            product?.category && 
+            product?.category !== activeCategory && 
+            activeCategory !== 'all'
+           ) {
+            return <Page404/>
         }
 
-        return setContent([productLoadingStatus], singleItemContent, product, Spinner, Page404)
-    }
+        const content = setContent(
+            [productLoadingStatus], 
+            (props) => <SingleItemLayout {...props}/>,
+            {
+                product,
+                activeAtributeChanged,
+                cartProductAdded,
+            }, 
+            Spinner, 
+            Page404
+        )
 
-
-    render() {
         return (
             <>
-                {this.getSingleItemContent()}
+                {content}
             </>
         )
     }
+}
+
+SingleItemPage.propTypes = {
+    fetchProduct: func.isRequired,
+    id: string.isRequired,
+    productLoadingStatus: string.isRequired,
+    activeAtributeChanged: func.isRequired,
+    cartProductAdded: func.isRequired,
+    activeCategory: string.isRequired,
+    product: productType,
 }
 
 const mapStateToProps = (state) => {    
@@ -111,11 +84,8 @@ const mapStateToProps = (state) => {
             state => state.products.activeProduct,
             state
         ),
-        activeCategory: state.categories.activeCategory,
     }
 }
-
-
 
 export default compose(
     withSetCorrectCategory,

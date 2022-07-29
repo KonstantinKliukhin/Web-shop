@@ -4,7 +4,6 @@ import { Field, Query } from '@tilework/opus';
 export const getProductsByCategoryQuery = (categoryTitle) => {
     return new Query('category')
         .addArgument('input', 'CategoryInput', {'title': categoryTitle})
-        .addTransformation(res => res.products)
         .addField(new Field('products', true)
             .addFieldList(['id', 'name', 'brand', 'inStock', 'gallery'])
             .addField(new Field('prices', true)
@@ -22,6 +21,13 @@ export const getProductsByCategoryQuery = (categoryTitle) => {
                 .addCalculatedField('selectedItem', (res) => res?.items[1])
             )
         )
+        .addTransformation(res => {
+            if (res?.products?.length > 9) {
+                return res.products.slice(0, 9)
+            } else {
+                return res.products
+            }
+        })
 }
 
 export const getProductById = (id) => {

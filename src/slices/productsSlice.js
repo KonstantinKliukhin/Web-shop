@@ -47,6 +47,7 @@ const productSlice = createSlice({
             })
             .addCase('products/fetchProducts/fulfilled', (state, action) => {
                 state.productsLoadingStatus = 'confirmed';
+
                 productsAdapter.setAll(state, action.payload.category)
             })
             .addCase('products/fetchProducts/rejected', (state, action) => {

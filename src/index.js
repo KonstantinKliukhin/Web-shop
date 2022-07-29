@@ -1,27 +1,17 @@
 import ReactDOM from 'react-dom/client';
-import App from './components/app/App';
-import { Provider } from 'react-redux';
-import './assets/style/style.scss';
 
+import { Provider } from 'react-redux';
 import store from './store';
 
-import debounce from './utils/debounce';
-import {saveState} from './services/browserStorage';
+import App from './components/app/App';
 
-import {StrictMode} from 'react';
+import './assets/style/style.scss';
 
-store.subscribe(
-  debounce(() => {
-      saveState(store.getState())
-  }, 800)
-)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <StrictMode>
       <App />
-    </StrictMode>
   </Provider>
 );
 

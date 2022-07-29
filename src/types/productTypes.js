@@ -1,4 +1,5 @@
-import {arrayOf, string, number, shape} from 'prop-types';
+import {arrayOf, string, number, shape, bool} from 'prop-types';
+import { currencyType } from './currenciesTypes';
 
 export const attributeItemType = shape({
     id: string.isRequired,
@@ -14,13 +15,7 @@ export const attributeType = shape({
     selectedItem: attributeItemType.isRequired,
 });
 
-export const attributesType = arrayOf(attributeType)
-
-export const currencyType = shape({
-    id: string.isRequired,
-    label: string.isRequired,
-    symbol: string.isRequired,
-})
+export const attributesType = arrayOf(attributeType);
 
 export const priceType = shape({
     amount: number.isRequired,
@@ -28,6 +23,32 @@ export const priceType = shape({
 });
 
 export const pricesType = arrayOf(priceType);
+
+export const productType = shape({
+    id: string,
+    name: string,
+    brand: string,
+    inStock: bool,
+    description: string,
+    category: string,
+    gallery: arrayOf(string),
+    attributes: attributesType,
+    price: priceType,
+    prices: pricesType,
+});
+
+export const listProductType = shape({
+    id: string.isRequired,
+    name: string.isRequired,
+    brand: string.isRequired,
+    inStock: bool.isRequired,
+    gallery: arrayOf(string).isRequired,
+    attributes: attributesType.isRequired,
+    price: priceType,
+    prices: pricesType.isRequired,
+});
+
+export const listProductsType = arrayOf(listProductType);
 
 export const cartProductType = shape({
     id: string.isRequired,
@@ -38,4 +59,4 @@ export const cartProductType = shape({
     attributes: attributesType.isRequired,
     price: priceType,
     prices: pricesType.isRequired,
-})
+});

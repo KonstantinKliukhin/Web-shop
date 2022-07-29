@@ -2,19 +2,23 @@ const KEY = 'reduxStoreCart';
 
 export function loadState() {
     try {
-      const serializedState = localStorage.getItem(KEY);
+        const serializedState = localStorage.getItem(KEY);
 
-      if (!serializedState) return undefined;
+        if (!serializedState) return undefined
 
-      return {cart: JSON.parse(serializedState)};
+        return JSON.parse(serializedState);
     } catch (e) {
-      return undefined;
+        return undefined;
     }
 }
 
 export async function saveState(state) {
     try {
-        const serializedState = JSON.stringify(state?.cart);
+        const serializedState = JSON.stringify({
+            cart: state.cart,
+            currencies: state.currencies,
+            categories: state.categories,
+        });
 
         localStorage.setItem(KEY, serializedState);
     } catch (e) {

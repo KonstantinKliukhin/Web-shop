@@ -37,7 +37,7 @@ class DropDownList extends Component {
 		const { select } = this.props;
 
 		if (select) {
-		this.selectSingleItem(select);
+		    this.selectSingleItem(select);
 		}
 	}
 
@@ -128,6 +128,12 @@ class DropDownList extends Component {
 							style = {selected ? {...selectedItem, ...listItem}: listItem}
 							key={item.value}
 							onClick={() => this.selectItem(item)}
+                            onKeyDown={(e) => {
+                                if (e.code === 'Enter' || e.code === 'Space') {
+                                    this.selectItem(item)
+                                }
+                            }}
+                            tabIndex={0}
 						>
 							{item.label}
 						</li>
@@ -149,7 +155,7 @@ class DropDownList extends Component {
 
 	render() {
 
-		const {id, styles, isArrow} = this.props;
+		const {id, styles, isArrow } = this.props;
 		const { isListOpen, title } = this.state;
 
 		const {
@@ -167,6 +173,8 @@ class DropDownList extends Component {
 				style={wrapper}
 			>
 				<button
+                    aria-controls={id}
+                    aria-expanded={isListOpen}
 					type="button"
 					className={`dropdown-list__header ${id}`}
 					style={header}
@@ -189,12 +197,13 @@ class DropDownList extends Component {
 				</button>
 				{isListOpen && (
 					<div
-					className={`dropdown-list__list ${id}`}
-					style={list}
+                        id={id}
+    					className={`dropdown-list__list ${id}`}
+    					style={list}
 					>
 						<ul
-						className={`dropdown-list__scroll-list ${id}`}
-						style={scrollList}
+    						className={`dropdown-list__scroll-list ${id}`}
+    						style={scrollList}
 						>
 							{this.listItems()}
 						</ul>

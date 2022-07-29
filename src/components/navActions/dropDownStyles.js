@@ -14,7 +14,7 @@ const currenciesStyles = {
         top: '77%',
         left: '-50%',
         boxShadow: '0px 4px 35px rgba(168, 172, 176, 0.19)',
-        background: '#fff'
+        background: '#fff',
     },
     listItem: {
         height: '45px',

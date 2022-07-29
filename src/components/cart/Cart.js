@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { arrayOf, bool, string, func, number } from 'prop-types';
 import { cartProductType, priceType } from '../../types/productTypes';
 
-import { Link } from 'react-router-dom';
+import setContent from '../../utils/setContent';
 
 import {connect} from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
@@ -17,14 +17,15 @@ import {
 
 import {productsWithCorrectPriceSelector, toCorrectPriceSelector} from '../../selectors/productWithCorrectPrice';
 
-import CartList from '../cartList/CartList';
+import CartLayout from './CartLayout';
+
+import Page404 from '../../pages/404/404';
 
 import './cart.scss';
 
 
 class Cart extends Component {
-
-    getCartContent = () => {
+    render() {
         const {
             mini, 
             cartProductsList, 
@@ -35,68 +36,41 @@ class Cart extends Component {
             cartProductCountIncreased,
             cartProductCountDecreased,
             cartTaxPrice,
+            currenciesLoadingStatus,
         } = this.props;
 
         const mainClass = mini ? 'minicart' : 'cart';
 
+        let content;
+
         if (!cartProductsList?.length) {
-            return (
+            content = (
                 <div className={`${mainClass}-empty`}>
                     <p className={`${mainClass}-empty__text`}>
                         Add an item to your cart and it will appear here!
                     </p>
                 </div>
             )
+        } else {
+            content = setContent(
+                [currenciesLoadingStatus],
+                (props) => <CartLayout {...props}/>,
+                {
+                    mini, 
+                    cartProductsList, 
+                    cartProductsIds, 
+                    mainClass, 
+                    cartTaxPrice, 
+                    cartQuantity, 
+                    cartTotalPrice, 
+                    onToggleMenu,
+                    cartProductCountIncreased,
+                    cartProductCountDecreased,
+                },
+                true,
+                <Page404/>
+            )
         }
-
-        return (
-            <>
-                <CartList 
-                    type={`${mini ? 'mini-cart' : 'main-cart'}`}
-                    cartProductsList={cartProductsList}
-                    cartProductsIds={cartProductsIds}
-                    isItemSlider={!mini}
-                    onIncreaseCartProductCount={cartProductCountIncreased}
-                    onDecreaseCartProductCount={cartProductCountDecreased}
-                />
-                <div className={`${mainClass}__count`}>
-                    {mini || 
-                        <>
-                            <p className="cart__count__tax">Tax 21%: </p>
-                            <p className="cart__count__number">
-                                {`${cartTaxPrice?.currency?.symbol}${cartTaxPrice?.amount}`}
-                            </p>
-                            <p className="cart__count_quantity">Quantity: </p>
-                            <p className="cart__count__number">{cartQuantity}</p>
-                        </>
-                    }
-                    <p className={`${mainClass}__count__total`}>Total: </p>
-                    <p className={`${mainClass}__count__number`}>
-                        {`${cartTotalPrice?.currency?.symbol}${cartTotalPrice?.amount}`}
-                    </p>
-                </div>
-                <div className={`flex-sb-center ${mainClass}__btns-wrapper`}>
-                    {mini && 
-                        <Link 
-                            onClick={onToggleMenu} 
-                            to='/cart' 
-                            className="minicart__btn btn-white"
-                        >
-                                View bag
-                        </Link>
-                    }
-                    <button className={`${mainClass}__btn btn-green`}>
-                        {mini ? 'CHECK OUT' : 'ORDER'}
-                    </button>    
-                </div>
-            </>
-        )
-    }
-
-    render() {
-        const {mini, cartQuantity } = this.props;
-
-        const mainClass = mini ? 'minicart' : 'cart';
 
         return (
             <div className={mainClass}>
@@ -106,22 +80,46 @@ class Cart extends Component {
                     </p>) :
                     <h1 className={`cart__title`}>CART</h1> 
                 }
-                {this.getCartContent()}
+                {content}
             </div>
         )
     }
 }
 
+Cart.propTypes = {
+    mini: bool,
+    onToggleMenu: func,
+    cartProductCountDecreased: func.isRequired,
+    cartProductCountIncreased: func.isRequired,
+    cartQuantity: number.isRequired,
+    cartTaxPrice: priceType,
+    cartTotalPrice: priceType,
+    cartProductsIds: arrayOf(string),
+    cartProductsList: arrayOf(cartProductType)
+};
+
 const totalPriceSelector = createSelector(
     (state) => state.cart.cartTotalPrice,
     (state) => state.currencies.activeCurrency,
     toCorrectPriceSelector
-)
+);
 
 const TaxPriceSelector = createSelector(
     (state) => state.cart.cartTaxPrice,
     (state) => state.currencies.activeCurrency,
     toCorrectPriceSelector
+);
+
+const currenciesLoadingSelector = createSelector(
+    state => state.currencies.currenciesLoadingStatus,
+    state => state.currencies.activeCurrency,
+    (currenciesLoadingStatus, activeCurrency) => {
+        if (currenciesLoadingStatus === 'confirmed' && !activeCurrency) {
+            return 'loading'
+        } else {
+            return currenciesLoadingStatus
+        }
+    }
 )
 
 const mapStateToProps = (state) => {
@@ -134,20 +132,9 @@ const mapStateToProps = (state) => {
         cartTotalPrice: totalPriceSelector(state),
         cartQuantity: state.cart.cartQuantity,
         cartTaxPrice: TaxPriceSelector(state),
+        currenciesLoadingStatus: currenciesLoadingSelector(state),
     }
-}
-
-Cart.propTypes = {
-    mini: bool,
-    onToggleMenu: func,
-    cartProductCountDecreased: func.isRequired,
-    cartProductCountIncreased: func.isRequired,
-    cartQuantity: number,
-    cartTaxPrice: priceType,
-    cartTotalPrice: priceType,
-    cartProductsIds: arrayOf(string),
-    cartProductsList: arrayOf(cartProductType)
-}
+};
 
 export default connect(
     mapStateToProps, 
