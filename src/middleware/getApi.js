@@ -10,7 +10,7 @@ export const fetchMiddleware = () => next => action => {
 
         return (async function fetchData() {
             try {
-                const result = await client.post(action.payload); 
+                const result = await client.post(action.payload);
 
                 if (result?.errors?.length || 
                     Object.values(result).every(elem => elem === null)) {

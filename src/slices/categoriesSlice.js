@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getCategoriesNamesQuery } from "../services/queries/categoriesQueries";
 
 
-const initialState = {
+export const initialState = {
     activeCategory: '',
     categoriesLoadingStatus: 'idle',
     categories: []

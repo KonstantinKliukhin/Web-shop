@@ -41,7 +41,10 @@ class ProductCard extends Component {
                             className="products__card__cart-btn"
                             tabIndex={0}
                             role='button'
-                            onClick={onCartBtnClick}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onCartBtnClick(e)
+                            }}
                             onKeyDown={(e) => {
                                 if (e.code === 'Enter' || e.code === 'Space') {
                                     onCartBtnClick(e)

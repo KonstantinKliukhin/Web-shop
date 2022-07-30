@@ -1,4 +1,8 @@
-const KEY = 'reduxStoreCart';
+import { initialState as categoriesItialState } from "../slices/categoriesSlice";
+import { initialState as currenciesInitialState } from "../slices/currencieSlice";
+
+
+const KEY = 'reduxStore';
 
 export function loadState() {
     try {
@@ -16,8 +20,14 @@ export async function saveState(state) {
     try {
         const serializedState = JSON.stringify({
             cart: state.cart,
-            currencies: state.currencies,
-            categories: state.categories,
+            currencies: {
+                ...currenciesInitialState,
+                activeCurrency: state.currencies.activeCurrency,
+            },
+            categories: {
+                ...categoriesItialState,
+                activeCategory: state.categories?.activeCategory,
+            },
         });
 
         localStorage.setItem(KEY, serializedState);

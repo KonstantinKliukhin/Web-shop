@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { getAllCurrencies } from "../services/queries/currencyQueries";
 
-const initialState = {
+export const initialState = {
     currenciesLoadingStatus: 'idle',
     currencies: [],
     activeCurrency: null,

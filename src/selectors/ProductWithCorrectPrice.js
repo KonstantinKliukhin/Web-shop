@@ -2,11 +2,17 @@ import { createSelector } from "@reduxjs/toolkit"
 
 
 export const toCorrectPriceSelector = (prices, activeCurrency) => {
-    const isCorrectPrices = prices?.every((price) => {
-        return price?.currency?.id != null && typeof price?.amount === 'number'
-    })
+    let isCorrectPrices;
+
+    if (prices?.length) {
+        isCorrectPrices = prices?.some((price) => {
+            return price?.currency?.id != null && typeof price?.amount === 'number'
+        })
+    } else {
+        return null
+    }
   
-    if (prices?.length && activeCurrency && isCorrectPrices) {
+    if (activeCurrency && isCorrectPrices) {
         return (
             prices?.find((price) => {
                 return price.currency.id === activeCurrency.id

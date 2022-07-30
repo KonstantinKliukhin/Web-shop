@@ -74,8 +74,14 @@ const withSetCorrectCategory = (Component) => {
                      Page404,
                 )
             } else if (currentCategoryIndex === -1) {
-                return <Page404/>
-            } else if (categories.length && currentCategoryIndex >= 0) {
+                return setContent(
+                    [categoriesLoadingStatus], 
+                    () => <Page404/>,
+                     null, 
+                     null,
+                     Page404,
+                )
+            } else if (currentCategoryIndex >= 0) {
                 activeCategoryChanged(categoryPath);
                 
                 return <Component 

@@ -8,7 +8,6 @@ import CartItem from "../cartItem/CartItem";
 import './cartList.scss';
 
 class CartList extends Component {
-
     render() {
         const {
             type, 
