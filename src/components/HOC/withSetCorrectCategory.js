@@ -95,7 +95,6 @@ const withSetCorrectCategory = (Component) => {
         }
 
         render() {
-            console.log('render')
             return (
                 <>
                     {this.state.activeContent}

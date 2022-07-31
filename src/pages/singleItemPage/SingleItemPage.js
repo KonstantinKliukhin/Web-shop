@@ -31,6 +31,7 @@ class SingleItemPage extends Component {
 
     render() {
         const { 
+            id,
             product, 
             productLoadingStatus, 
             activeAtributeChanged, 
@@ -41,7 +42,8 @@ class SingleItemPage extends Component {
         if (
             product?.category && 
             product?.category !== activeCategory && 
-            activeCategory !== 'all'
+            activeCategory !== 'all' &&
+            id === product?.id
            ) {
             return <Page404/>
         }
