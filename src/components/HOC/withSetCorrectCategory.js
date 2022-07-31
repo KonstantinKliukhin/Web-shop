@@ -78,7 +78,7 @@ const withSetCorrectCategory = (Component) => {
                     [categoriesLoadingStatus], 
                     () => <Page404/>,
                      null, 
-                     null,
+                     false,
                      Page404,
                 )
             } else if (currentCategoryIndex >= 0) {
@@ -106,7 +106,6 @@ const withSetCorrectCategory = (Component) => {
         categoryPath: string,
         activeCategoryChanged: func.isRequired,
         categoriesLoadingStatus: string.isRequired,
-        
     }
 
     const mapStateToProps = (state) => ({

@@ -1,6 +1,5 @@
 import { Component } from "react";
 
-
 import { func, string } from "prop-types";
 import { productType } from "../../types/productTypes";
 
@@ -9,10 +8,10 @@ import setContent from "../../utils/setContent";
 import { connect } from "react-redux";
 import { compose } from "@reduxjs/toolkit";
 
-import { fetchProduct, activeAtributeChanged} from "../../slices/productsSlice";
+import { fetchProduct, activeAtributeChanged} from "../../slices/activeProductSlice";
 import { cartProductAdded } from "../../slices/cartSlice";
 
-import {productsWithCorrectPriceSelector} from "../../selectors/productWithCorrectPrice";
+import {productsWithCorrectPriceSelector} from "../../selectors/priceSelectors";
 
 import Page404 from "../404/404";
 import Spinner from "../../components/spinner/Spinner";
@@ -79,9 +78,9 @@ SingleItemPage.propTypes = {
 
 const mapStateToProps = (state) => {    
     return {
-        productLoadingStatus: state.products.productLoadingStatus,
+        productLoadingStatus: state.activeProduct.productLoadingStatus,
         product: productsWithCorrectPriceSelector(
-            state => state.products.activeProduct,
+            state => state.activeProduct.activeProduct,
             state
         ),
     }

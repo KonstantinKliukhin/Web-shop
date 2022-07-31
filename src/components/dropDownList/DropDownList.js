@@ -91,7 +91,7 @@ class DropDownList extends Component {
 	selectSingleItem = (item) => {
 		const { list } = this.props;
 
-		const selectedItem = list.find((i) => i.value === item.value);
+		const selectedItem = list.find((i) => i.value === item?.value);
 		
 		this.selectItem(selectedItem);
 	}

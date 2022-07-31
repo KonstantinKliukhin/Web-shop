@@ -62,11 +62,11 @@ const changeProductCount = (state, id, adapter, difference) => {
 }
 
 const validateToCartProduct = (product) => {
-    if (product?.id || 
-        product?.name || 
-        product?.brand || 
-        product?.prices || 
-        product?.inStock ||
+    if (product?.id && 
+        product?.name && 
+        product?.brand && 
+        product?.prices && 
+        product?.inStock &&
         product?.prices?.every(
             price => (price?.currency?.id != null && typeof price?.amount === 'number')
         )

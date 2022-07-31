@@ -15,7 +15,7 @@ import {
     cartProductCountDecreased 
 } from '../../slices/cartSlice';
 
-import {productsWithCorrectPriceSelector, toCorrectPriceSelector} from '../../selectors/productWithCorrectPrice';
+import {productsWithCorrectPriceSelector, toCorrectPriceSelector} from '../../selectors/priceSelectors';
 
 import CartLayout from './CartLayout';
 

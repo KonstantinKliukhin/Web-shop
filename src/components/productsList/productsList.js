@@ -7,7 +7,7 @@ import setContent from '../../utils/setContent';
 
 import { connect } from 'react-redux';
 
-import {productsWithCorrectPriceSelector} from '../../selectors/productWithCorrectPrice';
+import {productsWithCorrectPriceSelector} from '../../selectors/priceSelectors';
 
 import {fetchProducts, selectAllProducts} from '../../slices/productsSlice';
 import { activeCategoryChanged } from '../../slices/categoriesSlice';

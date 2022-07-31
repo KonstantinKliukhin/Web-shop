@@ -1,12 +1,12 @@
 import { initialState as categoriesItialState } from "../slices/categoriesSlice";
 import { initialState as currenciesInitialState } from "../slices/currencieSlice";
 
+import { REDUX_LOCALSTORAGE_KEY } from "../data/locaStorageKeys";
 
-const KEY = 'reduxStore';
 
 export function loadState() {
     try {
-        const serializedState = localStorage.getItem(KEY);
+        const serializedState = localStorage.getItem(REDUX_LOCALSTORAGE_KEY);
 
         if (!serializedState) return undefined
 
@@ -30,7 +30,7 @@ export async function saveState(state) {
             },
         });
 
-        localStorage.setItem(KEY, serializedState);
+        localStorage.setItem(REDUX_LOCALSTORAGE_KEY, serializedState);
     } catch (e) {
         console.error(e)
     }
