@@ -2,13 +2,12 @@ import {Component, lazy, Suspense} from 'react';
 
 import {BrowserRouter as Router, Route, Switch,} from 'react-router-dom';
 
+import NavBar from '../navBar/NavBar';
 import Spinner from '../spinner/Spinner';
-
 import ErrorBoundery from '../errorBoundary/ErrorBoundary';
 
-const NavBar = lazy(() => import('../navBar/NavBar'));
 const CartPage = lazy(() => import('../../pages/cartPage/CartPage'));
-const  ProductsPage = lazy(() => import('../../pages/productsPage/ProductsPage'));
+const ProductsPage = lazy(() => import('../../pages/productsPage/ProductsPage'));
 const SingleItemPage = lazy(() => import('../../pages/singleItemPage/SingleItemPage'));
 const Page404 = lazy(() => import('../../pages/404/404'));
 
