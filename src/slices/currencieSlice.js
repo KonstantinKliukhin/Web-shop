@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getAllCurrencies } from "../services/queries/currencyQueries";
+import { getAllCurrencies } from "../opus/queries/currencyQueries";
 
 export const initialState = {
     currenciesLoadingStatus: 'idle',

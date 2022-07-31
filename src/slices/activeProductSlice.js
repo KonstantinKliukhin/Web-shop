@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import {getProductById} from "../services/queries/productsQueries";
+import {getProductById} from "../opus/queries/productsQueries";
 
 const initialState = {
     productLoadingStatus: 'idle',

@@ -1,6 +1,6 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 
-import {getProductsByCategoryQuery } from "../services/queries/productsQueries";
+import {getProductsByCategoryQuery } from "../opus/queries/productsQueries";
 
 
 const productsAdapter = createEntityAdapter();

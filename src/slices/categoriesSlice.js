@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getCategoriesNamesQuery } from "../services/queries/categoriesQueries";
+import { getCategoriesNamesQuery } from "../opus/queries/categoriesQueries";
 
 
 export const initialState = {
