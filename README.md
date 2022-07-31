@@ -13,8 +13,8 @@ Here I used opus to get data from the server, because within this project, apoll
 - **utils**. It contains functions that are reused in the project.
 - **services**. It contains:
     - graphql queries
-    - settings for opus client(opus client is client from opus library that helps with fetching data from grafql server)
     - function for working with browser storage
+- **opus**. Settings for opus client(opus client is client from opus library that helps with fetching data from grafql server).
 - **components**. It contains all components that aren't pages. Each component can contain its style, some tools, wich is necessary only in this component, and its layout.
 - **pages**. It contains all existing pages in the project. The structure of each page is same to component structure.
 - **types**. It contains general prop-types for components.

@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 import setContent from "../../utils/setContent";
 
 import {connect} from 'react-redux';
-import { fetchCategories, activeCategoryChanged} from '../../slices/categoriesSlice';
+import { fetchCategories, activeCategoryChanged } from '../../slices/categoriesSlice';
 
 import NavActions from "../navActions/NavActions";
 

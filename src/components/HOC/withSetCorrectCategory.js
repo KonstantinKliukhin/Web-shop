@@ -28,8 +28,11 @@ const withSetCorrectCategory = (Component) => {
             const {activeCategory} = this.props;
             const {activeContent} = this.state;
 
-            return (activeCategory !== nextProps.categoryPath ||
-                nextState.activeContent?.type !== activeContent?.type);
+            return (
+                activeCategory !== nextProps.categoryPath ||
+                nextState.activeContent?.type !== activeContent?.type ||
+                (!this.props.categoryPath && nextProps.categoryPath)
+            );
         }
 
         componentDidMount() {
@@ -78,7 +81,7 @@ const withSetCorrectCategory = (Component) => {
                     [categoriesLoadingStatus], 
                     () => <Page404/>,
                      null, 
-                     false,
+                     null,
                      Page404,
                 )
             } else if (currentCategoryIndex >= 0) {
@@ -92,6 +95,7 @@ const withSetCorrectCategory = (Component) => {
         }
 
         render() {
+            console.log('render')
             return (
                 <>
                     {this.state.activeContent}
@@ -106,6 +110,7 @@ const withSetCorrectCategory = (Component) => {
         categoryPath: string,
         activeCategoryChanged: func.isRequired,
         categoriesLoadingStatus: string.isRequired,
+        
     }
 
     const mapStateToProps = (state) => ({

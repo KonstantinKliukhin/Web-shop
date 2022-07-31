@@ -1,4 +1,4 @@
-import client from '../services/opusClientConfig';
+import client from '../opus/client';
 
 
 export const fetchMiddleware = () => next => action => {
